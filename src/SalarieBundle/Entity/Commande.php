@@ -9,15 +9,35 @@
 namespace SalarieBundle\Entity;
 
 use SalarieBundle\Entity\Employe;
+use Doctrine\ORM\Mapping as ORM;
 
-
+/**
+ * Class Commande
+ * @package SalarieBundle\Entity
+ * @ORM\Entity
+ * @ORM\Table(name="commande")
+ */
 class Commande
 {
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue
+     */
     public $id;
+
+    /** @ORM\Column(type="date") */
     public $date;
+
+    /** @ORM\Column(type="string") */
     public $client;
+
+    /** @ORM\Column(type="string") */
     public $employe;
+
+    /** @ORM\Column(type="integer") */
     public $etat;
+
     public $listArticles_Commande;
 
 

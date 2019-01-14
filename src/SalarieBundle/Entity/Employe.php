@@ -7,26 +7,29 @@
  */
 
 namespace SalarieBundle\Entity;
-
+use Doctrine\ORM\Mapping as ORM;
 /**
  * Class Employe
  * @package SalarieBundle\Entity
- * @Entity
- * @Table(name="employe")
+ * @ORM\Entity
+ * @ORM\Table(name="employe")
  */
 class Employe
 {
     /**
-     * @Id
-     * @Colum(type="integer")
-     * @GeneratedValue
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue
      */
     public $id;
-    /** @Colum(type="varchar") */
+
+    /** @ORM\Column(type="string") */
     public $nom;
-    /** @Colum(type="varchar") */
+
+    /** @ORM\Column(type="string") */
     public $prenom;
-    /** @Colum(type="int") */
+
+    /** @ORM\Column(type="integer") */
     public $manager;
 
     /**

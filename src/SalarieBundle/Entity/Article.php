@@ -7,12 +7,27 @@
  */
 
 namespace SalarieBundle\Entity;
+use Doctrine\ORM\Mapping as ORM;
 
-
+/**
+ * Class Article
+ * @package SalarieBundle\Entity
+ * @ORM\Entity
+ * @ORM\Table(name="article")
+ */
 class Article
 {
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue
+     */
     public $id;
+
+    /** @ORM\Column(type="string") */
     public $libelle;
+
+    /** @ORM\Column(type="integer") */
     public $poids;
 
     /**

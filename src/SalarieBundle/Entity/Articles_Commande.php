@@ -7,13 +7,33 @@
  */
 
 namespace SalarieBundle\Entity;
+use Doctrine\ORM\Mapping as ORM;
 
-
+/**
+ * Class Articles_Commande
+ * @package SalarieBundle\Entity
+ * @ORM\Entity
+ * @ORM\Table(name="articles_commande")
+ */
 class Articles_Commande
 {
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue
+     */
+    public $id;
+
+    /** @ORM\Column(type="integer") */
     public $commande;
+
+    /** @ORM\Column(type="integer") */
     public $article;
+
+    /** @ORM\Column(type="integer") */
     public $quantite;
+
+    /** @ORM\Column(type="integer") */
     public $poidsTotal;
 
     /**
