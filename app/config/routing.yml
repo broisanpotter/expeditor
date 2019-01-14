@@ -1,0 +1,4 @@
+salarie:
+    resource: "@SalarieBundle/Controller/"
+    type:     annotation
+    prefix:   /
