@@ -32,19 +32,13 @@ class Employe
     /** @ORM\Column(type="integer") */
     public $manager;
 
-    /**
-     * Employe constructor.
-     * @param $id
-     * @param $nom
-     * @param $prenom
-     * @param $manager
-     */
-    public function __construct($nom, $prenom, $manager)
+    public function __construct()
     {
-        $this->setNom($nom);
-        $this->setPrenom($prenom);
-        $this->setManager($manager);
+        $this->setNom("");
+        $this->setPrenom("");
+        $this->setManager(0);
     }
+
 
 
     /**

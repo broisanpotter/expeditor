@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Articles_commandes list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Commande</th>
+                <th>Article</th>
+                <th>Quantite</th>
+                <th>Poidstotal</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for articles_Commande in articles_Commandes %}
+            <tr>
+                <td><a href="{{ path('articles_commande_show', { 'id': articles_Commande.id }) }}">{{ articles_Commande.id }}</a></td>
+                <td>{{ articles_Commande.commande }}</td>
+                <td>{{ articles_Commande.article }}</td>
+                <td>{{ articles_Commande.quantite }}</td>
+                <td>{{ articles_Commande.poidsTotal }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('articles_commande_show', { 'id': articles_Commande.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('articles_commande_edit', { 'id': articles_Commande.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('articles_commande_new') }}">Create a new articles_Commande</a>
+        </li>
+    </ul>
+{% endblock %}

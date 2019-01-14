@@ -12,6 +12,6 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('@Salarie/salarie.html.twig');
+        var_dump('test mort');
     }
 } 
