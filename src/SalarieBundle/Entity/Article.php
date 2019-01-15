@@ -91,6 +91,4 @@ class Article
     {
         $this->poids = $poids;
     }
-
-
 }
