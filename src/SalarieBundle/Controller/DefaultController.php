@@ -12,6 +12,8 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('@Salarie/salarie.html.twig');
+        return $this->render('@Salarie/default/index.html.twig', array(
+            'base_dir' => "coucou",
+        ));
     }
 } 

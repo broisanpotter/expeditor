@@ -8,23 +8,42 @@
 
 namespace SalarieBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
+
 /**
  * Class Client
  * @package SalarieBundle\Entity
- * @Entity
- * @Table(name="client")
+ * @ORM\Entity
+ * @ORM\Table(name="client")
  */
 class Client
 {
     /**
-     * @Id
-     * @Colum(type="integer")
-     * @GeneratedValue
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue
      */
     public $id;
+
+    /**
+     * @ORM\Column(type="string")
+     */
     public $nom;
+
+    /**
+     * @ORM\Column(type="string")
+     */
     public $adresse;
+
+    /**
+     * @ORM\Column(type="string")
+     */
     public $codePostal;
+
+    /**
+     * @ORM\Column(type="string")
+     */
     public $ville;
 
     /**

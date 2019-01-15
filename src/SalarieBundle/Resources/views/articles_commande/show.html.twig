@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Articles_commande</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ articles_Commande.id }}</td>
+            </tr>
+            <tr>
+                <th>Commande</th>
+                <td>{{ articles_Commande.commande }}</td>
+            </tr>
+            <tr>
+                <th>Article</th>
+                <td>{{ articles_Commande.article }}</td>
+            </tr>
+            <tr>
+                <th>Quantite</th>
+                <td>{{ articles_Commande.quantite }}</td>
+            </tr>
+            <tr>
+                <th>Poidstotal</th>
+                <td>{{ articles_Commande.poidsTotal }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('articles_commande_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('articles_commande_edit', { 'id': articles_Commande.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}
