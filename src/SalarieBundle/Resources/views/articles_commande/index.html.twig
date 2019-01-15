@@ -27,19 +27,10 @@
                         <li>
                             <a href="{{ path('articles_commande_show', { 'id': articles_Commande.id }) }}">show</a>
                         </li>
-                        <li>
-                            <a href="{{ path('articles_commande_edit', { 'id': articles_Commande.id }) }}">edit</a>
-                        </li>
                     </ul>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('articles_commande_new') }}">Create a new articles_Commande</a>
-        </li>
-    </ul>
 {% endblock %}
