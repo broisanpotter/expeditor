@@ -20,6 +20,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 
 class SecurityController extends Controller
@@ -32,22 +33,29 @@ class SecurityController extends Controller
      */
     public function accueilAction(Request $request) {
 
-        $task = new SecurityType();
-        $task->setEmail(('Adresse email'));
-        $task->setPassword('mdp');
+        $session = $request->getSession();
 
-        $form = $this->createFormBuilder($task)
-            ->add('email', TextType::class)
-            ->add('password', TextType::class)
-            ->add('save', SubmitType::class, array('label' => 'Login'))
-            ->getForm();
+        if(!$session) {
+            $session = new Session();
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $employes = $em->getRepository('SalarieBundle:Employe')->findAll();
+
+        if(!empty($session->get('id'))) {
+            return $this->render('@Salarie/employe/index.html.twig', array(
+                'employes' => $employes,
+                'session' => $session,
+            ));
+        }
+
+        $form = $this->generateForm();
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
             $task = $form->getData();
-            $em = $this->getDoctrine()->getManager();
 
             $userSecurity = new Security();
             $userSecurity->setAdresseMail($task->email);
@@ -58,10 +66,13 @@ class SecurityController extends Controller
             $securedUser = $employe->findOneBy(array('mail' => $userSecurity->getAdresseMail(), 'password' => $userSecurity->getPassword()));
 
             if($securedUser != null) {
-                $employes = $em->getRepository('SalarieBundle:Employe')->findAll();
+                $session->start();
+                $session->set('id', $securedUser->getId());
+                $session->set('statut', $securedUser->isManager());
 
                 return $this->render('@Salarie/employe/index.html.twig', array(
                     'employes' => $employes,
+                    'session' => $session,
                 ));
             }
 
@@ -74,9 +85,42 @@ class SecurityController extends Controller
             'form' => $form->createView(),
         ));
 
+    }
 
+    /**
+     *
+     * @Route("/logout", name="deconnexion")
+     * @Method("GET")
+     */
+    public function logoutAction(Request $request) {
+
+        $session = $request->getSession();
+
+        $session->invalidate();
+
+        $form = $this->generateForm();
+
+        return $this->render('@Salarie/security/login.html.twig', array(
+            'form' => $form->createView(),
+        ));
 
     }
+
+    public function  generateForm() {
+        $task = new SecurityType();
+        $task->setEmail(('Adresse email'));
+        $task->setPassword('mdp');
+
+        $form = $this->createFormBuilder($task)
+            ->add('email', TextType::class)
+            ->add('password', TextType::class)
+            ->add('save', SubmitType::class, array('label' => 'Login'))
+            ->getForm();
+
+        return $form;
+    }
+
+
 
 
 
