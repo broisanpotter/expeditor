@@ -20,6 +20,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 
 class SecurityController extends Controller
@@ -31,6 +32,18 @@ class SecurityController extends Controller
      * @Method("GET")
      */
     public function accueilAction(Request $request) {
+
+        $session = new Session();
+
+        $em = $this->getDoctrine()->getManager();
+        $employes = $em->getRepository('SalarieBundle:Employe')->findAll();
+
+        if(!empty($session->get('id'))) {
+            return $this->render('@Salarie/employe/index.html.twig', array(
+                'employes' => $employes,
+                'session' => $session,
+            ));
+        }
 
         $task = new SecurityType();
         $task->setEmail(('Adresse email'));
@@ -47,7 +60,6 @@ class SecurityController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
 
             $task = $form->getData();
-            $em = $this->getDoctrine()->getManager();
 
             $userSecurity = new Security();
             $userSecurity->setAdresseMail($task->email);
@@ -58,10 +70,14 @@ class SecurityController extends Controller
             $securedUser = $employe->findOneBy(array('mail' => $userSecurity->getAdresseMail(), 'password' => $userSecurity->getPassword()));
 
             if($securedUser != null) {
-                $employes = $em->getRepository('SalarieBundle:Employe')->findAll();
+
+                $session->start();
+                $session->set('id', $securedUser->getId());
+                $session->set('statut', $securedUser->isManager());
 
                 return $this->render('@Salarie/employe/index.html.twig', array(
                     'employes' => $employes,
+                    'session' => $session,
                 ));
             }
 
