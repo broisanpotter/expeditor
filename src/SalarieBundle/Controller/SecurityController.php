@@ -33,7 +33,11 @@ class SecurityController extends Controller
      */
     public function accueilAction(Request $request) {
 
-        $session = new Session();
+        $session = $request->getSession();
+
+        if(!$session) {
+            $session = new Session();
+        }
 
         $em = $this->getDoctrine()->getManager();
         $employes = $em->getRepository('SalarieBundle:Employe')->findAll();
@@ -45,15 +49,7 @@ class SecurityController extends Controller
             ));
         }
 
-        $task = new SecurityType();
-        $task->setEmail(('Adresse email'));
-        $task->setPassword('mdp');
-
-        $form = $this->createFormBuilder($task)
-            ->add('email', TextType::class)
-            ->add('password', TextType::class)
-            ->add('save', SubmitType::class, array('label' => 'Login'))
-            ->getForm();
+        $form = $this->generateForm();
 
         $form->handleRequest($request);
 
@@ -70,7 +66,6 @@ class SecurityController extends Controller
             $securedUser = $employe->findOneBy(array('mail' => $userSecurity->getAdresseMail(), 'password' => $userSecurity->getPassword()));
 
             if($securedUser != null) {
-
                 $session->start();
                 $session->set('id', $securedUser->getId());
                 $session->set('statut', $securedUser->isManager());
@@ -90,9 +85,42 @@ class SecurityController extends Controller
             'form' => $form->createView(),
         ));
 
+    }
 
+    /**
+     *
+     * @Route("/logout", name="deconnexion")
+     * @Method("GET")
+     */
+    public function logoutAction(Request $request) {
+
+        $session = $request->getSession();
+
+        $session->invalidate();
+
+        $form = $this->generateForm();
+
+        return $this->render('@Salarie/security/login.html.twig', array(
+            'form' => $form->createView(),
+        ));
 
     }
+
+    public function  generateForm() {
+        $task = new SecurityType();
+        $task->setEmail(('Adresse email'));
+        $task->setPassword('mdp');
+
+        $form = $this->createFormBuilder($task)
+            ->add('email', TextType::class)
+            ->add('password', TextType::class)
+            ->add('save', SubmitType::class, array('label' => 'Login'))
+            ->getForm();
+
+        return $form;
+    }
+
+
 
 
 
