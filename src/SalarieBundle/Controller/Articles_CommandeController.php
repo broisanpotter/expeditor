@@ -26,7 +26,7 @@ class Articles_CommandeController extends Controller
 
         $articles_Commandes = $em->getRepository('SalarieBundle:Articles_Commande')->findAll();
 
-        return $this->render('@Salarie/articles_commande/index.html.twig', array(
+        return $this->render('@Salarie/articles_commande/index_accueil_manager.html.twig', array(
             'articles_Commandes' => $articles_Commandes,
         ));
     }

@@ -26,7 +26,7 @@ class EmployeController extends Controller
 
         $employes = $em->getRepository('SalarieBundle:Employe')->findAll();
 
-        return $this->render('@Salarie/employe/index.html.twig', array(
+        return $this->render('@Salarie/employe/index_accueil_manager.html.twig', array(
             'employes' => $employes,
         ));
     }

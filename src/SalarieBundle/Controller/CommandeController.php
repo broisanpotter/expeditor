@@ -26,7 +26,7 @@ class CommandeController extends Controller
 
         $commandes = $em->getRepository('SalarieBundle:Commande')->findAll();
 
-        return $this->render('commande/index.html.twig', array(
+        return $this->render('@Salarie/commande/index_accueil_manager.html.twig', array(
             'commandes' => $commandes,
         ));
     }
