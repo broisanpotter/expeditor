@@ -48,28 +48,12 @@ class ArticleController extends Controller
             $em->persist($article);
             $em->flush();
 
-            return $this->redirectToRoute('article_show', array('id' => $article->getId()));
+            return $this->redirectToRoute('article_index');
         }
 
         return $this->render('@Salarie/article/new.html.twig', array(
             'article' => $article,
             'form' => $form->createView(),
-        ));
-    }
-
-    /**
-     * Finds and displays a article entity.
-     *
-     * @Route("/{id}", name="article_show")
-     * @Method("GET")
-     */
-    public function showAction(Article $article)
-    {
-        $deleteForm = $this->createDeleteForm($article);
-
-        return $this->render('@Salarie/article/show.html.twig', array(
-            'article' => $article,
-            'delete_form' => $deleteForm->createView(),
         ));
     }
 
@@ -88,7 +72,7 @@ class ArticleController extends Controller
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('article_edit', array('id' => $article->getId()));
+            return $this->redirectToRoute('article_index');
         }
 
         return $this->render('@Salarie/article/edit.html.twig', array(
@@ -101,19 +85,15 @@ class ArticleController extends Controller
     /**
      * Deletes a article entity.
      *
-     * @Route("/{id}", name="article_delete")
+     * @Route("/delete/{id}", name="article_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, Article $article)
     {
-        $form = $this->createDeleteForm($article);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($article);
-            $em->flush();
-        }
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($article);
+        $em->flush();
 
         return $this->redirectToRoute('article_index');
     }
