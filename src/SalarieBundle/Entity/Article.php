@@ -38,9 +38,8 @@ class Article
      */
     public function __construct()
     {
-        $this->setId("");
         $this->setLibelle("");
-        $this->setPoids("");
+        $this->setPoids(0);
     }
 
 

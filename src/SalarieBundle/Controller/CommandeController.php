@@ -39,14 +39,17 @@ class CommandeController extends Controller
      * @Route("/{id}", name="commande_show")
      * @Method("GET")
      */
-    public function showAction(Commande $commande)
+    public function showAction(Request $request, Commande $commande)
     {
         $poidsTotalCommande =0;
         $em = $this->getDoctrine()->getManager();
         $articlesCommandes = $em->getRepository('SalarieBundle:Articles_Commande')->findBy(array('commande' => $commande->getId()));
+        $client = $em->getRepository('SalarieBundle:Client')->find($commande->getClient());
 
         foreach ($articlesCommandes as $articlesCommande) {
-                $poidsTotalCommande=$poidsTotalCommande+$articlesCommande->getPoidsTotal();
+            $article = $em->getRepository('SalarieBundle:Article')->find($articlesCommande->getArticle());
+            $articlesCommande->setArticle($article);
+            $poidsTotalCommande=$poidsTotalCommande+$articlesCommande->getPoidsTotal();
         }
 
         $poidsTotalCommandeAvecCarton = 300 + $poidsTotalCommande;
@@ -55,6 +58,7 @@ class CommandeController extends Controller
 
         return $this->render('@Salarie/commande/show.html.twig', array(
             'commande' => $commande,
+            'client' => $client,
             'articlesCommande' => $articlesCommandes,
             ));
     }
