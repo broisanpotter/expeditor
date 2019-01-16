@@ -32,14 +32,59 @@ class Employe
     /** @ORM\Column(type="integer") */
     public $manager;
 
+    /** @ORM\Column(type="string") */
+    public $mail;
+
+    /** @ORM\Column(type="string") */
+    public $password;
+
+    const MANAGER = 'valeur constante';
+
+    public $nombreCommandeQuotidien;
+
+
+
+
     public function __construct()
     {
         $this->setNom("");
         $this->setPrenom("");
         $this->setManager(0);
+        $this->setMail('');
+        $this->setNombreCommandeQuotidien(0);
     }
 
+    /**
+     * @return mixed
+     */
+    public function getNombreCommandeQuotidien()
+    {
+        return $this->nombreCommandeQuotidien;
+    }
 
+    /**
+     * @param mixed $nombreCommandeQuotidien
+     */
+    public function setNombreCommandeQuotidien($nombreCommandeQuotidien)
+    {
+        $this->nombreCommandeQuotidien = $nombreCommandeQuotidien;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMail()
+    {
+        return $this->mail;
+    }
+
+    /**
+     * @param mixed $mail
+     */
+    public function setMail($mail)
+    {
+        $this->mail = $mail;
+    }
 
     /**
      * @return mixed

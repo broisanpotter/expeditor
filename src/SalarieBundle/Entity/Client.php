@@ -47,24 +47,6 @@ class Client
     public $ville;
 
     /**
-     * Client constructor.
-     * @param $id
-     * @param $nom
-     * @param $adresse
-     * @param $codePostal
-     * @param $ville
-     */
-    public function __construct($id, $nom, $adresse, $codePostal, $ville)
-    {
-        $this->setId($id);
-        $this->setNom($nom);
-        $this->setadresse($adresse);
-        $this->setCodePostal($codePostal);
-        $this->setVille($ville);
-    }
-
-
-    /**
      * @return mixed
      */
     public function getId()

@@ -1,44 +1,84 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Commande</h1>
+    <div class="container">
+        <br>
+        <button class="btn btn-outline-danger float-right">Déconnexion</button>
+    </div>
+    <div class="container">
+        <br>
+        <h1 class="text-center">Commande n°{{ commande.id }}</h1>
+        <br><br><br><br>
+        <h3>Nom : {{ client.nom }}</h3>
+        <h3>Adresse : {{ client.adresse }}</h3>
+        <br><br>
+    </div>
 
-    <table>
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ commande.id }}</td>
-            </tr>
-            <tr>
-                <th>Date</th>
-                <td>{% if commande.date %}{{ commande.date|date('Y-m-d') }}{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Client</th>
-                <td>{{ commande.client }}</td>
-            </tr>
-            <tr>
-                <th>Employe</th>
-                <td>{{ commande.employe }}</td>
-            </tr>
-            <tr>
-                <th>Etat</th>
-                <td>{{ commande.etat }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <form method="post">
+        <div class="container">
+            <div class="row">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th class="text-center">Libelle</th>
+                        <th class="text-center">Quantité</th>
+                        <th class="text-center">Vérification quantité</th>
+                        <th class="text-center">Poids (g)</th>
+                    </tr>
+                    </thead>
+                    <tbody id="table">
 
-    <ul>
-        <li>
-            <a href="{{ path('commande_index') }}">Back to the list</a>
-        </li>
-        <li>
-            <a href="{{ path('commande_edit', { 'id': commande.id }) }}">Edit</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+                    {% for articleCommande in articlesCommande %}
+                        <tr name="tr" class="rowTR">
+                            <td>{{ articleCommande.article.libelle }}</td>
+                            <td class="text-center quantiteBase">{{ articleCommande.quantite }}</td>
+                            <td class="text-center">
+                                <input value="0" class="text-center form-control quantiteInput" min="0"
+                                       type="number">
+                            </td>
+                            <td class="text-center">{{ articleCommande.article.poids }}</td>
+                        </tr>
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <div class="container">
+            <br>
+            <h3>
+                Poids total : {{ commande.poidsTotal }}g
+            </h3>
+            <h3>
+                Poids total (+ carton d'expédition) : {{ commande.poidsTotalAvecCarton }}g
+            </h3>
+        </div>
+
+        <div class="container text-center">
+            <br><br><br>
+            <input value="Imprimer bon de livraison " class="btn btn-success col-3" onclick="confirmation()"/>
+        </div>
+    </form>
+    <script>
+        function confirmation() {
+            var bool = false;
+            $('.rowTR').each(function () {
+
+                var quantiteBase = $(this).find('.quantiteBase');
+                var quantiteInput = $(this).find('.quantiteInput');
+                quantiteInput.css("background-color",'white');
+                if(quantiteBase.text() != quantiteInput.val()){
+                    quantiteInput.css("background-color",'red');
+                    bool = true;
+                }
+
+            })
+            if(bool){
+                alert("Quantités incorrectes");
+            }
+        }
+
+    </script>
 {% endblock %}
