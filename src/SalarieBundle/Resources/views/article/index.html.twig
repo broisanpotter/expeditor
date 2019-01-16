@@ -24,7 +24,7 @@
                     <td class="poids">{{ article.poids }}</td>
                     <td>
                         <ul>
-                            <button class="btn btn-warning" onclick="document.location.href='{{ path('article_edit', { 'id': article.id }) }}'">Modifier</button>
+                            <button class="btn btn-warning" onclick="document.location.href='{{ path('article_edit', { 'id': article.id }) }}'">Voir</button>
                         </ul>
                     </td>
                 </tr>
@@ -32,28 +32,4 @@
             </tbody>
         </table>
     </div>
-
-    <script>
-        function updateForm(button){
-            var row = $(button).parent().parent().parent();
-            var id = row.find(".id").text();
-            var libelle = row.find(".libelle").text();
-            var poids = row.find(".poids").text();
-            var url = "{{ path('article_edit', { 'id': 'id_article' }) }}";
-            url = url.replace("id_article", id);
-            $('#formUpdate').attr('action', url);
-
-            $("#libelle").val(libelle);
-            $("#poids").val(poids);
-        }
-
-        function deleteForm(button){
-            var row = $(button).parent().parent().parent();
-            var id = row.find(".id").text();
-            var url = "{{ path('article_delete', { 'id': 'id_article' }) }}";
-            url = url.replace("id_article", id);
-            $('#formDelete').attr('action', url);
-        }
-    </script>
-
 {% endblock %}
