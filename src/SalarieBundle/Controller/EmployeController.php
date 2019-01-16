@@ -2,11 +2,14 @@
 
 namespace SalarieBundle\Controller;
 
+use SalarieBundle\Entity\Commande;
 use SalarieBundle\Entity\Employe;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\Constraints\Date;
+
 
 /**
  * Employe controller.
@@ -15,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class EmployeController extends Controller
 {
+    const STATUT_VALIDE = 2;
     /**
      * Lists all employe entities.
      *
@@ -25,7 +29,27 @@ class EmployeController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
+
         $employes = $em->getRepository('SalarieBundle:Employe')->findAll();
+
+        foreach ($employes as $employe) {
+            $commande = $em->getRepository(Commande::class);
+            $listCommandes = $commande->findAll(array('employe' => $employe->getId(), 'etat' => self::STATUT_VALIDE));
+
+            if($listCommandes != null) {
+
+                $dateDay = new \DateTime();
+                $currentDay = $dateDay->format('Y-m-d');
+                $count = 0;
+                foreach ($listCommandes as $commande) {
+
+                    if($commande->getDateValidation() && $commande->getDateValidation()->format('Y-m-d') == $currentDay) {
+                        $count +=1;
+                    }
+                }
+                $employe->setNombreCommandeQuotidien($count);
+            }
+        }
 
         return $this->render('@Salarie/employe/index.html.twig', array(
             'employes' => $employes,
