@@ -26,7 +26,7 @@ class ArticleController extends Controller
 
         $articles = $em->getRepository('SalarieBundle:Article')->findAll();
 
-        return $this->render('@Salarie/article/index_accueil_manager.html.twig', array(
+        return $this->render('@Salarie/article/index.html.twig', array(
             'articles' => $articles,
         ));
     }

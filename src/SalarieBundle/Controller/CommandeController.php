@@ -43,7 +43,7 @@ class CommandeController extends Controller
             }
         }
 
-        return $this->render('@Salarie/commande/index_accueil_manager.html.twig', array(
+        return $this->render('@Salarie/commande/index.html.twig', array(
             'commandes' => $newCommandes,
         ));
     }
