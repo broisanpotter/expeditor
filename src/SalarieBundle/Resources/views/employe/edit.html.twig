@@ -1,21 +1,37 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Employe edit</h1>
+    <div class="col-lg-4 offset-lg-4">
+        <h1 class="text-center">Modification / suppression de l'employé</h1>
 
-    {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
-    {{ form_end(edit_form) }}
+        <div class="text-center">
+        </div>
 
-    <ul>
-        <li>
-            <a href="{{ path('employe_index') }}">Back to the list</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+        {{ form_start(edit_form) }}
+            <div class="form-group">
+                {{ form_row(edit_form.nom, { 'attr': { 'class': 'form-control' } })}}
+            </div>
+            <div class="form-group">
+                {{ form_row(edit_form.prenom, { 'attr': { 'class': 'form-control' } })}}
+            </div>
+            <div class="form-group">
+                {{ form_row(edit_form.mail, { 'attr': { 'class': 'form-control' } }) }}
+            </div>
+            <div class="form-group">
+                {{ form_row(edit_form.manager, { 'attr': { 'class': 'form-control' } }) }}
+            </div>
+            <div class="text-center">
+                <input class="btn btn-warning" type="submit" value="Modifier" />
+                <button class="btn btn-primary" onclick="document.location.href='{{ path('employe_index') }}'">Retour à la liste</button>
+            </div>
+        {{ form_end(edit_form) }}
+    </div>
+    <br/>
+    <br/>
+    <div class="text-center">
+        {{ form_start(delete_form) }}
+        <span>Voulez-vous supprimer cet employé ?</span>
+        <input class="btn btn-danger text-center" type="submit" value="Oui">
+        {{ form_end(delete_form) }}
+    </div>
 {% endblock %}

@@ -49,28 +49,12 @@ class EmployeController extends Controller
             $em->persist($employe);
             $em->flush();
 
-            return $this->redirectToRoute('employe_show', array('id' => $employe->getId()));
+            return $this->redirectToRoute('employe_index');
         }
 
         return $this->render('@Salarie/employe/new.html.twig', array(
             'employe' => $employe,
             'form' => $form->createView(),
-        ));
-    }
-
-    /**
-     * Finds and displays a employe entity.
-     *
-     * @Route("/{id}", name="employe_show")
-     * @Method("GET")
-     */
-    public function showAction(Employe $employe)
-    {
-        $deleteForm = $this->createDeleteForm($employe);
-
-        return $this->render('@Salarie/employe/show.html.twig', array(
-            'employe' => $employe,
-            'delete_form' => $deleteForm->createView(),
         ));
     }
 
@@ -89,7 +73,7 @@ class EmployeController extends Controller
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('employe_edit', array('id' => $employe->getId()));
+            return $this->redirectToRoute('employe_index');
         }
 
         return $this->render('@Salarie/employe/edit.html.twig', array(
@@ -102,19 +86,14 @@ class EmployeController extends Controller
     /**
      * Deletes a employe entity.
      *
-     * @Route("/{id}", name="employe_delete")
+     * @Route("/delete/{id}", name="employe_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, Employe $employe)
     {
-        $form = $this->createDeleteForm($employe);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($employe);
-            $em->flush();
-        }
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($employe);
+        $em->flush();
 
         return $this->redirectToRoute('employe_index');
     }

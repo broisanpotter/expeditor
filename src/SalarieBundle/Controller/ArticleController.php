@@ -58,22 +58,6 @@ class ArticleController extends Controller
     }
 
     /**
-     * Finds and displays a article entity.
-     *
-     * @Route("/{id}", name="article_show")
-     * @Method("GET")
-     */
-    public function showAction(Article $article)
-    {
-        $deleteForm = $this->createDeleteForm($article);
-
-        return $this->render('article/show.html.twig', array(
-            'article' => $article,
-            'delete_form' => $deleteForm->createView(),
-        ));
-    }
-
-    /**
      * Displays a form to edit an existing article entity.
      *
      * @Route("/{id}/edit", name="article_edit")
