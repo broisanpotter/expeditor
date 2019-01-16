@@ -29,10 +29,10 @@ class Commande
     /** @ORM\Column(type="date") */
     public $date;
 
-    /** @ORM\Column(type="string") */
+    /** @ORM\Column(type="integer") */
     public $client;
 
-    /** @ORM\Column(type="string") */
+    /** @ORM\Column(type="integer") */
     public $employe;
 
     /** @ORM\Column(type="integer") */

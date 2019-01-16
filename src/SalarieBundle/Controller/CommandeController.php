@@ -25,6 +25,17 @@ class CommandeController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $commandes = $em->getRepository('SalarieBundle:Commande')->findAll();
+        $clients = $em->getRepository('SalarieBundle:Client')->findAll();
+
+        foreach ($commandes as $commande) {
+            foreach ($clients as $client) {
+                var_dump($commande->getClient());
+                var_dump($client->getId());
+                //if ($commande->getClient() == $client->getId()) {
+                //    $commande->setClient($client);
+                //}
+            }
+        }
 
         return $this->render('@Salarie/commande/index_accueil_manager.html.twig', array(
             'commandes' => $commandes,
