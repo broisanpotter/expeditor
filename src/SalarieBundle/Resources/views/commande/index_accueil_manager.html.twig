@@ -2,7 +2,6 @@
 
 {% block body %}
 
-
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="#">Navbar</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -82,8 +81,8 @@
             <tr>
                 <td><a href="{{ path('commande_show', { 'id': commande.id }) }}">{{ commande.id }}</a></td>
                 <td>{% if commande.date %}{{ commande.date|date('Y-m-d') }}{% endif %}</td>
-                <td>{{ commande.client }}</td>
-                <td>{{ commande.employe }}</td>
+                <td>{{ dump(commande.client) }}</td>
+                <td>{{ dump(commande.employe) }}</td>
                 <td>{{ commande.etat }}</td>
                 <td>Mettre Adresse client ici</td>
             </tr>

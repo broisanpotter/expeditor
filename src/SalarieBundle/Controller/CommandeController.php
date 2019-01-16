@@ -24,11 +24,27 @@ class CommandeController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-
         $commandes = $em->getRepository('SalarieBundle:Commande')->findAll();
 
+        $newCommandes =array();
+        $key = 0;
+
+        foreach ($commandes as $commande) {
+            if ($commande->getEtat() != 2) {
+                $client = $em->getRepository('SalarieBundle:Client')->find($commande->getClient());
+                $commande->setClient($client);
+
+                if ($commande->getEmploye() != null) {
+                    $employe = $em->getRepository('SalarieBundle:Employe')->find($commande->getEmploye());
+                    $commande->setEmploye($employe);
+                }
+                $newCommandes[$key] = $commande;
+                $key++;
+            }
+        }
+
         return $this->render('@Salarie/commande/index_accueil_manager.html.twig', array(
-            'commandes' => $commandes,
+            'commandes' => $newCommandes,
         ));
     }
 
