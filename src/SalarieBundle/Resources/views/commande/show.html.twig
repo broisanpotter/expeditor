@@ -25,20 +25,45 @@
                 <th>Etat</th>
                 <td>{{ commande.etat }}</td>
             </tr>
+            <tr>
+                <th>Liste Article</th>
+                {% for articleCommande in articlesCommande %}
+                    <tr>
+                        <th>Id</th>
+                        <td>{{ articleCommande.id }}</td>
+                    </tr>
+                    <tr>
+                        <th>Commande</th>
+                        <td>{{ articleCommande.commande }}</td>
+                    </tr>
+                    <tr>
+                        <th>Article</th>
+                        <td>{{ articleCommande.article }}</td>
+                    </tr>
+                    <tr>
+                        <th>Quantite</th>
+                        <td>{{ articleCommande.quantite }}</td>
+                    </tr>
+                    <tr>
+                        <th>Poidstotal</th>
+                        <td>{{ articleCommande.poidsTotal }}</td>
+                    </tr>
+                {% endfor %}
+            </tr>
+            <tr>
+                <th>Poids Total commande</th>
+                <td>{{ commande.poidsTotal }}</td>
+            </tr>
+            <tr>
+                <th>Poids Total commande avec Carton</th>
+                <td>{{ commande.poidsTotalAvecCarton }}</td>
+            </tr>
         </tbody>
     </table>
 
     <ul>
         <li>
-            <a href="{{ path('commande_index') }}">Back to the list</a>
-        </li>
-        <li>
             <a href="{{ path('commande_edit', { 'id': commande.id }) }}">Edit</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
         </li>
     </ul>
 {% endblock %}

@@ -41,11 +41,8 @@ class Articles_CommandeController extends Controller
      */
     public function showAction(Articles_Commande $articles_Commande)
     {
-        $deleteForm = $this->createDeleteForm($articles_Commande);
-
         return $this->render('@Salarie/articles_commande/show.html.twig', array(
             'articles_Commande' => $articles_Commande,
-            'delete_form' => $deleteForm->createView(),
         ));
     }
 
