@@ -7,9 +7,11 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
         <link rel="stylesheet" type="text/css" href="{{ asset('bundles/salarie/css/bootstrap.min.css') }}" />
     </head>
-    <body>
+    <body style="height: 100%">
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
+        <script src="{{ asset('bundles/salarie/js/jquery.js') }}"></script>
         <script src="{{ asset('bundles/salarie/js/bootstrap.bundle.js') }}"></script>
+        <script src="{{ asset('bundles/salarie/js/bootstrap.js') }}"></script>
     </body>
 </html>

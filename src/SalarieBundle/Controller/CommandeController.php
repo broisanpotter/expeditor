@@ -2,6 +2,7 @@
 
 namespace SalarieBundle\Controller;
 
+use SalarieBundle\Entity\Articles_Commande;
 use SalarieBundle\Entity\Commande;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -26,7 +27,7 @@ class CommandeController extends Controller
 
         $commandes = $em->getRepository('SalarieBundle:Commande')->findAll();
 
-        return $this->render('commande/index.html.twig', array(
+        return $this->render('@Salarie/commande/index.html.twig', array(
             'commandes' => $commandes,
         ));
     }
@@ -40,12 +41,22 @@ class CommandeController extends Controller
      */
     public function showAction(Commande $commande)
     {
-        $deleteForm = $this->createDeleteForm($commande);
+        $poidsTotalCommande =0;
+        $em = $this->getDoctrine()->getManager();
+        $articlesCommandes = $em->getRepository('SalarieBundle:Articles_Commande')->findBy(array('commande' => $commande->getId()));
+
+        foreach ($articlesCommandes as $articlesCommande) {
+                $poidsTotalCommande=$poidsTotalCommande+$articlesCommande->getPoidsTotal();
+        }
+
+        $poidsTotalCommandeAvecCarton = 300 + $poidsTotalCommande;
+        $commande->setPoidsTotal($poidsTotalCommande);
+        $commande->setPoidsTotalAvecCarton($poidsTotalCommandeAvecCarton);
 
         return $this->render('@Salarie/commande/show.html.twig', array(
             'commande' => $commande,
-            'delete_form' => $deleteForm->createView(),
-        ));
+            'articlesCommande' => $articlesCommandes,
+            ));
     }
 
     /**
@@ -56,7 +67,6 @@ class CommandeController extends Controller
      */
     public function editAction(Request $request, Commande $commande)
     {
-        $deleteForm = $this->createDeleteForm($commande);
         $editForm = $this->createForm('SalarieBundle\Form\CommandeType', $commande);
         $editForm->handleRequest($request);
 
@@ -69,7 +79,6 @@ class CommandeController extends Controller
         return $this->render('@Salarie/commande/edit.html.twig', array(
             'commande' => $commande,
             'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
         ));
     }
 

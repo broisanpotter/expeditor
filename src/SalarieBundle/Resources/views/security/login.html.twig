@@ -1,3 +1,7 @@
+{{ form_start(form) }}
+{{ form_widget(form) }}
+{{ form_end(form) }}
+
 {% extends 'base.html.twig' %}
 
 {% block body %}
@@ -22,8 +26,9 @@
         <div class="text-center">
             <span>Voulez-vous supprimer cet article ?</span>
             {{ form_start(delete_form) }}
-                <input class="btn btn-danger" type="submit" value="Supprimer">
+            <input class="btn btn-danger" type="submit" value="Supprimer">
             {{ form_end(delete_form) }}
         </div>
     </div>
 {% endblock %}
+
