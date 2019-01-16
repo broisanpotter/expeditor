@@ -2,12 +2,16 @@
 
 {% block body %}
     <h1>Commande</h1>
-
     <table>
         <tbody>
+            <td>{{ dump(commande) }}</td>
             <tr>
                 <th>Id</th>
                 <td>{{ commande.id }}</td>
+            </tr>
+            <tr>
+                <th>Etat</th>
+                <td>{{ commande.etat }}</td>
             </tr>
             <tr>
                 <th>Date</th>
@@ -15,30 +19,23 @@
             </tr>
             <tr>
                 <th>Client</th>
-                <td>{{ commande.client }}</td>
+                <td>{{ dump(client) }}</td>
+            </tr>
+
+            <tr>
+                <th>Liste Article</th>
+                {% for articleCommande in articlesCommande %}
+                    <td>Article : {{ dump(articleCommande.article) }}, Quantité : {{ articleCommande.quantite }}</td>
+                {% endfor %}
             </tr>
             <tr>
-                <th>Employe</th>
-                <td>{{ commande.employe }}</td>
+                <th>Poids Total commande</th>
+                <td>{{ commande.poidsTotal }}</td>
             </tr>
             <tr>
-                <th>Etat</th>
-                <td>{{ commande.etat }}</td>
+                <th>Poids Total commande avec Carton</th>
+                <td>{{ commande.poidsTotalAvecCarton }}</td>
             </tr>
         </tbody>
     </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('commande_index') }}">Back to the list</a>
-        </li>
-        <li>
-            <a href="{{ path('commande_edit', { 'id': commande.id }) }}">Edit</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
 {% endblock %}
