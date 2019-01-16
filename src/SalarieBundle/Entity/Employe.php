@@ -38,6 +38,12 @@ class Employe
     /** @ORM\Column(type="string") */
     public $password;
 
+    const MANAGER = 'valeur constante';
+
+    public $nombreCommandeQuotidien;
+
+
+
 
     public function __construct()
     {
@@ -45,6 +51,23 @@ class Employe
         $this->setPrenom("");
         $this->setManager(0);
         $this->setMail('');
+        $this->setNombreCommandeQuotidien(0);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNombreCommandeQuotidien()
+    {
+        return $this->nombreCommandeQuotidien;
+    }
+
+    /**
+     * @param mixed $nombreCommandeQuotidien
+     */
+    public function setNombreCommandeQuotidien($nombreCommandeQuotidien)
+    {
+        $this->nombreCommandeQuotidien = $nombreCommandeQuotidien;
     }
 
     /**

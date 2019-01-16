@@ -26,7 +26,7 @@ class ArticleController extends Controller
 
         $articles = $em->getRepository('SalarieBundle:Article')->findAll();
 
-        return $this->render('article/index.html.twig', array(
+        return $this->render('@Salarie/article/index.html.twig', array(
             'articles' => $articles,
         ));
     }
@@ -51,7 +51,7 @@ class ArticleController extends Controller
             return $this->redirectToRoute('article_show', array('id' => $article->getId()));
         }
 
-        return $this->render('article/new.html.twig', array(
+        return $this->render('@Salarie/article/new.html.twig', array(
             'article' => $article,
             'form' => $form->createView(),
         ));
@@ -67,7 +67,7 @@ class ArticleController extends Controller
     {
         $deleteForm = $this->createDeleteForm($article);
 
-        return $this->render('article/show.html.twig', array(
+        return $this->render('@Salarie/article/show.html.twig', array(
             'article' => $article,
             'delete_form' => $deleteForm->createView(),
         ));
@@ -82,7 +82,7 @@ class ArticleController extends Controller
     public function editAction(Request $request, Article $article)
     {
         $deleteForm = $this->createDeleteForm($article);
-        $editForm = $this->createForm('SalarieBundle\Form\ArticleType', $article);
+           $editForm = $this->createForm('SalarieBundle\Form\ArticleType', $article);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
