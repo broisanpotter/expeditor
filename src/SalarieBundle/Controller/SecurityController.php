@@ -120,13 +120,13 @@ class SecurityController extends Controller
 
     public function  generateForm() {
         $task = new SecurityType();
-        $task->setEmail(('Adresse email'));
-        $task->setPassword('mdp');
+        $task->setEmail((''));
+        $task->setPassword('');
 
         $form = $this->createFormBuilder($task)
-            ->add('email', TextType::class)
-            ->add('password', TextType::class)
-            ->add('save', SubmitType::class, array('label' => 'Login'))
+            ->add('email', TextType::class, array('label' => 'Mail'))
+            ->add('password', TextType::class, array('label' => 'Mot de passe'))
+            ->add('save', SubmitType::class, array('label' => 'Connexion'))
             ->getForm();
 
         return $form;

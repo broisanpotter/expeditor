@@ -1,34 +1,24 @@
-{{ form_start(form) }}
-{{ form_widget(form) }}
-{{ form_end(form) }}
-
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1 class="h1 text-center">Editer article</h1>
-    <div class="col-lg-4 offset-lg-4">
+    <h1 class="h1 text-center">EXPEDITOR</h1>
+    <h2 class="h2 text-center">Connexion</h2>
+    <div class="col-lg-4 offset-lg-4 border rounded">
         <div>
-            {{ form_start(edit_form) }}
+            {{ form_start(form) }}
             <div class="form-group">
-                {{ form_row(edit_form.libelle, { 'attr': {'class': 'form-control'}}) }}
+                {{ form_row(form.email, { 'attr': {'class': 'form-control'}}) }}
             </div>
             <div class="form-group">
-                {{ form_row(edit_form.poids, { 'attr': {'class': 'form-control'}}) }}
+                {{ form_row(form.password, { 'attr': {'class': 'form-control'}}) }}
             </div>
             <div class="text-center">
-                <input class="btn btn-warning" type="submit" value="Modifier" />
-                <button class="btn btn-primary" onclick="document.location.href='{{ path('article_index') }}'">Retour à la liste</button>
+                {{ form_row(form.save, { 'attr': {'class': 'btn btn-primary'}}) }}
             </div>
-            {{ form_end(edit_form) }}
+            {{ form_end(form) }}
         </div>
         <br/>
         <br/>
-        <div class="text-center">
-            <span>Voulez-vous supprimer cet article ?</span>
-            {{ form_start(delete_form) }}
-            <input class="btn btn-danger" type="submit" value="Supprimer">
-            {{ form_end(delete_form) }}
-        </div>
     </div>
 {% endblock %}
 
