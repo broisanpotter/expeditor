@@ -21,10 +21,14 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 
 class SecurityController extends Controller
 {
+
+    const MANAGER = 1;
+    const EMPLOYE = 0;
 
     /**
      *
@@ -70,10 +74,18 @@ class SecurityController extends Controller
                 $session->set('id', $securedUser->getId());
                 $session->set('statut', $securedUser->isManager());
 
-                return $this->render('@Salarie/employe/index.html.twig', array(
-                    'employes' => $employes,
-                    'session' => $session,
-                ));
+                if($session->get('statut') === self::MANAGER) {
+                    return $this->redirectToRoute('employe_index', array(
+                        'employes' => $employes,
+                        'session' => $session,
+                    ));
+                }
+                else {
+                    return $this->redirectToRoute('commande_show', array(
+                        'employes' => $employes,
+                        'session' => $session,
+                    ));
+                }
             }
 
             return $this->render('@Salarie/security/login.html.twig', array(

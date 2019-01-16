@@ -42,8 +42,13 @@ class Commande
     /** @ORM\Column(type="integer") */
     public $etat;
 
+    /** @ORM\Column(type="date") */
+    public $dateValidation;
+
     public $listArticles_Commande;
+
     public $poidsTotal;
+
     public $poidsTotalAvecCarton;
 
 
@@ -62,6 +67,24 @@ class Commande
     {
         $this->employe = $employe;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getDateValidation()
+    {
+        return $this->dateValidation;
+    }
+
+    /**
+     * @param mixed $dateValidation
+     */
+    public function setDateValidation($dateValidation)
+    {
+        $this->dateValidation = $dateValidation;
+    }
+
+
 
     /**
      * @return mixed
