@@ -3,9 +3,12 @@
 namespace SalarieBundle\Controller;
 
 use SalarieBundle\Entity\Article;
+use SalarieBundle\Form\ArticleType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
  * Article controller.
@@ -40,11 +43,14 @@ class ArticleController extends Controller
     public function newAction(Request $request)
     {
         $article = new Article();
-        $form = $this->createForm('SalarieBundle\Form\ArticleType', $article);
+        $form = $this->generateForm();
         $form->handleRequest($request);
 
+        $em = $this->getDoctrine()->getManager();
+
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            $article->setPoids($form->getData()->poids);
+            $article->setLibelle($form->getData()->libelle);
             $em->persist($article);
             $em->flush();
 
@@ -66,11 +72,16 @@ class ArticleController extends Controller
     public function editAction(Request $request, Article $article)
     {
         $deleteForm = $this->createDeleteForm($article);
-        $editForm = $this->createForm('SalarieBundle\Form\ArticleType', $article);
+        $editForm = $this->generateFormEdit($article);
         $editForm->handleRequest($request);
 
+        $em = $this->getDoctrine()->getManager();
+
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $article->setPoids($editForm->getData()->poids);
+            $article->setLibelle($editForm->getData()->libelle);
+            $em->persist($article);
+            $em->flush();
 
             return $this->redirectToRoute('article_index');
         }
@@ -112,5 +123,33 @@ class ArticleController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    public function  generateForm() {
+
+        $task = new ArticleType();
+        $task->setLibelle((''));
+        $task->setPoids('');
+
+        $form = $this->createFormBuilder($task)
+            ->add('libelle', TextType::class, array('label' => 'Libelle'))
+            ->add('poids', TextType::class, array('label' => 'Poids (en grammes)'))
+            ->getForm();
+
+        return $form;
+    }
+
+    public function  generateFormEdit(Article $article) {
+
+        $task = new ArticleType();
+        $task->setLibelle(($article->getLibelle()));
+        $task->setPoids($article->getPoids());
+
+        $form = $this->createFormBuilder($task)
+            ->add('libelle', TextType::class, array('label' => 'Libelle'))
+            ->add('poids', TextType::class, array('label' => 'Poids (en grammes)'))
+            ->getForm();
+
+        return $form;
     }
 }
