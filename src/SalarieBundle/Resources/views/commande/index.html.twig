@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'navbar.html.twig' %}
 
 {% block body %}
 
@@ -22,7 +22,7 @@
     </div>
 
     <div class="container-fluid">
-        <table class="table">
+        <table class="table table-sm table-bordered">
             <thead class="thead-dark">
 
 
@@ -33,7 +33,7 @@
                 <th>Employe responsable</th>
                 <th>Détails articles</th>
                 <th>Etat</th>
-                <th>Adresse facturation</th>
+                <th>Adresse de livraison</th>
 
             </tr>
             </thead>
@@ -80,7 +80,7 @@
                     </div>
                 </div>
                 <div class="col-sm">
-                    <img class="rounded mx-auto d-block" src="{{ asset('bundles/salarie/images/logoExpeditor.png') }}"/>
+                    <img class="rounded mx-auto d-block" src="{{ asset('bundles/salarie/images/logoExpeditor_grand.png') }}"/>
                 </div>
                 <div class="col-sm">
                     <script charset='UTF-8'

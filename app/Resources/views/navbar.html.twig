@@ -9,6 +9,10 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
+
+                    <li>
+                        <img class="align-content-lg-start" src="{{ asset('bundles/salarie/images/logoExpeditor_petit.png') }}"/>
+                    </li>
                     <li class="nav-item active ">
                         <a class="nav-link btn btn-outline-warning" href="{{ path('commande_index') }}">Accueil <span
                                     class="sr-only">(current)</span></a>
@@ -21,7 +25,7 @@
                             Gestion des employes
                         </button>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{{ path('employe_new') }}">ajouter</a>
+                            <a class="dropdown-item" href="{{ path('employe_new') }}">Ajouter</a>
                             <a class="dropdown-item" href="{{ path('employe_index') }}">Consulter</a>
 
                         </div>
@@ -42,8 +46,11 @@
                 <form action="{{ path('deconnexion') }}" class="form-inline my-2 my-lg-0">
 
                     {#<li class="nav-item">#}
-                    {#<a class="nav-link disabled"  tabindex="-1" aria-disabled="true">Bonjour {{session.employe.nom }}!</a>#}
+                    {#<a class="nav-link disabled"  tabindex="-1" aria-disabled="true">Bonjour !</a>#}
                     {#</li>#}
+                    <li>
+                        <h1 class="text-center" style="text-shadow: px" > Bonjour {{session.data.id.nom}}{{ session.data.id.prenom }}!</h1>
+                    </li>
 
                     {#<a class="nav-link disabled" href="{{ path('deconnexion')}}" tabindex="-1" aria-disabled="true">Disabled</a>#}
                     <button class="btn btn-outline-danger my-2 my-sm-0" type="submit" >Déconnexion</button>

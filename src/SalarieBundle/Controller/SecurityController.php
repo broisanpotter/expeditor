@@ -49,7 +49,7 @@ class SecurityController extends Controller
         $employes = $em->getRepository('SalarieBundle:Employe')->findAll();
 
         if(!empty($session->get('id'))) {
-            return $this->render('@Salarie/employe/index.html.twig', array(
+            return $this->render('@Salarie/commande/index.html.twig', array(
                 'employes' => $employes,
                 'session' => $session,
             ));
@@ -78,7 +78,7 @@ class SecurityController extends Controller
 
                 // Statut MANAGER
                 if($session->get('statut') === self::MANAGER) {
-                    return $this->redirectToRoute('employe_index');
+                    return $this->redirectToRoute('commande_index');
                 }
 
                 // Statut EMPLOYE
