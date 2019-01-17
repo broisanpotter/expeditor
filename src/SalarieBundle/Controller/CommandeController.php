@@ -94,6 +94,37 @@ class CommandeController extends Controller
         var_dump($nextCommande);
     }
 
+    /**
+     * Displays a form to edit an existing commande entity.
+     *
+     * @Route("/validate/{id}", name="validate_commande")
+     * @Method({"GET", "POST"})
+     */
+    public function validateAndRedirectAction(Request $request) {
+
+        $em = $this->getDoctrine()->getManager();
+
+        if(!$request->get('id')) {
+            return false;
+        }
+
+        $commandeValidate = $em->getRepository('SalarieBundle:Commande')->findOneBy(array('id' => $request->get('id')));
+        $commandeValidate->setEtat(Commande::TRAITEE);
+        $em->flush();
+
+
+        $nextCommande = $em->getRepository('SalarieBundle:Commande')->findOneBy(array('etat' => 0));
+        $nextCommande->setEtat(Commande::EN_COURS_DE_TRAITEMENT);
+        $em->flush();
+
+        $session = $request->getSession();
+
+        return $this->redirectToRoute('commande_show', array(
+            'session' => $session,
+            'id' => $nextCommande->getId(),
+        ));
+    }
+
 
 
 }

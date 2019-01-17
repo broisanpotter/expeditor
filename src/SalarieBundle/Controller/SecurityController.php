@@ -83,13 +83,12 @@ class SecurityController extends Controller
                 }
                 else {
 
-                    $nextCommande = new CommandeController();
-                    $nextCommande = $nextCommande->getNextCommandeAction();
-                    var_dump($nextCommande);
-//                    return $this->redirectToRoute('commande_show', array(
-//                        'session' => $session,
-//                        'commande_id' => ,
-//                    ));
+                    $nextCommande = $this->getNextCommandeAction();
+
+                    return $this->redirectToRoute('commande_show', array(
+                        'session' => $session,
+                        'id' => $nextCommande,
+                    ));
                 }
             }
 
@@ -131,6 +130,15 @@ class SecurityController extends Controller
             ->getForm();
 
         return $form;
+    }
+
+    private function getNextCommandeAction() {
+
+        $em = $this->getDoctrine()->getManager();
+        $nextCommande = $em->getRepository('SalarieBundle:Commande')->findOneBy(array('etat' => 0));
+        $nextCommande->setEtat(Commande::EN_COURS_DE_TRAITEMENT);
+        $em->flush();
+        return $nextCommande->getId();
     }
 
 
