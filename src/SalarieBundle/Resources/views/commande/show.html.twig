@@ -115,8 +115,7 @@
     </div>
 
     <script>
-        function imprimer() {
-            var divImprimer = document.getElementById("imprimer").innerHTML;
+        function verif(){
             var bool = false;
             $('.rowTR').each(function () {
 
@@ -132,7 +131,12 @@
                     bool = true;
                 }
             })
-            if (bool) {
+            return bool;
+        }
+        function imprimer() {
+            var divImprimer = document.getElementById("imprimer").innerHTML;
+
+            if (verif()) {
                 alert("Quantités incorrectes");
             } else {
 
@@ -148,22 +152,7 @@
         }
 
         function confirmation() {
-            var bool = false;
-            $('.rowTR').each(function () {
-
-                var quantiteBase = $(this).find('.quantiteBase');
-                var quantiteInput = $(this).find('.quantiteInput');
-
-                quantiteInput.removeClass("btn-outline-danger");
-                quantiteInput.css("backgroundColor", 'white');
-                quantiteInput.css("color", 'black');
-                if (quantiteBase.text() != quantiteInput.val()) {
-                    quantiteInput.addClass("btn-outline-danger");
-                    quantiteInput.css("color", 'red');
-                    bool = true;
-                }
-            })
-            if (bool) {
+            if (verif()) {
                 alert("Quantités incorrectes");
             } else {
                 var val = confirm("Etes vous sûr de vouloir valider le bon de commande ?");
