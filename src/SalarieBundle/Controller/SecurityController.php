@@ -90,6 +90,7 @@ class SecurityController extends Controller
 
             return $this->render('@Salarie/security/login.html.twig', array(
                 'form' => $form->createView(),
+                'statut' => 'error'
             ));
         }
 
