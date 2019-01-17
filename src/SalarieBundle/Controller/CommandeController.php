@@ -113,14 +113,23 @@ class CommandeController extends Controller
         }
 
         // MAJ Etat + Employe
-        $nextCommande = $em->getRepository('SalarieBundle:Commande')->findOneBy(array('etat' => 0));
-        if($nextCommande) {
-            $nextCommande->setEtat(Commande::EN_COURS_DE_TRAITEMENT);
-            $nextCommande->setEmploye($request->get('employe'));
+        $nextCommandeEnCours = $em->getRepository('SalarieBundle:Commande')->findOneBy(array('etat' => 1, 'employe' => $commandeValidate->getEmploye()));
+        $nextCommandeEnAttente = $em->getRepository('SalarieBundle:Commande')->findOneBy(array('etat' => 0));
+
+        if($nextCommandeEnCours) {
+            return $this->redirectToRoute('commande_show', array(
+                'id' => $nextCommandeEnCours->getId(),
+                'statut' => 'success'
+            ));
+        }
+
+        if($nextCommandeEnAttente) {
+            $nextCommandeEnAttente->setEtat(Commande::EN_COURS_DE_TRAITEMENT);
+            $nextCommandeEnAttente->setEmploye($request->get('employe'));
             $em->flush();
 
             return $this->redirectToRoute('commande_show', array(
-                'id' => $nextCommande->getId(),
+                'id' => $nextCommandeEnAttente->getId(),
                 'statut' => 'success'
             ));
         }
@@ -133,7 +142,5 @@ class CommandeController extends Controller
         }
 
     }
-
-
 
 }
