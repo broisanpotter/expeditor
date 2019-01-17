@@ -94,7 +94,16 @@ class EmployeController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+
+            $em = $this->getDoctrine()->getManager();
+            $employe = new Employe();
+            $employe->setNom($editForm->getData()->nom);
+            $employe->setPrenom($editForm->getData()->prenom);
+            $employe->setMail($editForm->getData()->mail);
+            $employe->setManager($editForm->getData()->manager);
+            $employe->setPassword($editForm->getData()->password);
+            $em->persist($employe);
+            $em->flush();
 
             return $this->redirectToRoute('employe_index');
         }
