@@ -76,16 +76,31 @@ class SecurityController extends Controller
                 $session->set('id', $securedUser->getId());
                 $session->set('statut', $securedUser->isManager());
 
+                // Statut MANAGER
                 if($session->get('statut') === self::MANAGER) {
                     return $this->redirectToRoute('employe_index');
                 }
-                else {
 
+                // Statut EMPLOYE
+                else {
                     $nextCommande = $this->getNextCommandeAction($securedUser->getId());
 
-                    return $this->redirectToRoute('commande_show', array(
-                        'id' => $nextCommande,
-                    ));
+                    // Get commande
+                    if($nextCommande) {
+                        return $this->redirectToRoute('commande_show', array(
+                            'id' => $nextCommande,
+                            'statut' => 'success'
+                        ));
+                    }
+
+                    // No commande
+                    else {
+                        return $this->redirectToRoute('commande_show', array(
+                            'id' => 0,
+                            'statut' => 'error',
+
+                        ));
+                    }
                 }
             }
 
@@ -134,10 +149,18 @@ class SecurityController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $nextCommande = $em->getRepository('SalarieBundle:Commande')->findOneBy(array('etat' => 0));
-        $nextCommande->setEtat(Commande::EN_COURS_DE_TRAITEMENT);
-        $nextCommande->setEmploye($employeId);
-        $em->flush();
-        return $nextCommande->getId();
+        if($nextCommande) {
+            $nextCommande->setEtat(Commande::EN_COURS_DE_TRAITEMENT);
+            $nextCommande->setEmploye($employeId);
+            $em->flush();
+
+            return $nextCommande->getId();
+        }
+
+        else {
+            return false;
+        }
+
     }
 
 
