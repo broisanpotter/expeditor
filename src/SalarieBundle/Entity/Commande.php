@@ -99,7 +99,6 @@ class Commande
      */
     public function setEtat($etat)
     {
-        if ($etat)
         $this->etat = $etat;
     }
 

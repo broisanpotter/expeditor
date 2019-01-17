@@ -8,6 +8,7 @@
 
 namespace SalarieBundle\Controller;
 
+use SalarieBundle\Entity\Articles_Commande;
 use SalarieBundle\Entity\Client;
 use SalarieBundle\Entity\Commande;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -35,21 +36,18 @@ class ImportController extends Controller
      */
      public function importAction()
      {
-         $clients = array();
          $artilesCommande = array();
          $commandes = array();
          $tableau = array();
          $row = 0;
+         $carton = 300;
 
          $em = $this->getDoctrine()->getManager();
 
          // Import du fichier CSV
-         if (($handle = fopen(__DIR__ . "/../../../app/Resources/uploads/donneesCommandes2.csv", "r")) !== FALSE) { // Lecture du fichier, à adapter
+         if (($handle = fopen(__DIR__ . "/../../../app/Resources/uploads/donneesCommandes1.csv", "r")) !== FALSE) { // Lecture du fichier, à adapter
              while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) { // Eléments séparés par un point-virgule, à modifier si necessaire
                  $num = count($data); // Nombre d'éléments sur la ligne traitée
-
-             var_dump("ligne");
-             var_dump($row);
 
                  for ($c = 0; $c < $num; $c++) {
                      $tableau[$row] = array(
@@ -61,8 +59,6 @@ class ImportController extends Controller
                     );
                  }
 
-                 var_dump($tableau[$row]);
-
                  if ($tableau[$row]["date"] != "Date de Commande") {
                      $commande = new Commande();
                      $nomClient = $tableau[$row]["client"];
@@ -71,25 +67,43 @@ class ImportController extends Controller
                      $dateCommande = explode(" ", $tableau[$row]["date"]);
                      $idCommande = substr($tableau[$row]["num"], 8,2);
                      $commande->setId(intval($idCommande));
-                     $commande->setDate(new DateTime());
+                     $commande->setDate(new \DateTime($dateCommande[0]));
                      $commande->setClient($client->getId());
                      $commande->setEmploye(null);
-                     //TODO
-                     ////Const => 0
-                     $commande->setEtat(0);
-
-                     var_dump($client);
-                     var_dump($commande);
+                     $commande->setEtat(Commande::EN_ATTENTE);
+                     $listArticles = $tableau[$row]["articles"];
+                     $newListArticles = explode(";", $listArticles);
 
                      $em->persist($commande);
                      $em->flush();
 
+                     $newCommande = $em->getRepository('SalarieBundle:Commande')->findOneBy(array("client" => $commande->getClient()), array('id' => 'DESC'));
 
+                     $poidsTotal = 0;
+
+                     foreach ($newListArticles as $key => $newListArticle) {
+                         $articletxt = explode("(", $newListArticle);
+                         $nomArticle= trim(substr($articletxt[0], 0, -1));
+                         $quantite = trim($articletxt[1], ")");
+                         $myArticle = $this->getArticle($nomArticle);
+                         $articlesCommande = new Articles_Commande($newCommande->getId(), $myArticle->getId(), intval($quantite), $quantite*$myArticle->getPoids());
+                         $poidsTotal = $poidsTotal+$articlesCommande->getPoidsTotal();
+                         $artilesCommande[$key] = $articlesCommande;
+
+                         $em->persist($articlesCommande);
+                     }
+                     $newCommande->setListArticlesCommande($artilesCommande);
+                     $newCommande->setPoidsTotal($poidsTotal);
+                     $newCommande->setPoidsTotalAvecCarton($poidsTotal+$carton );
+
+                     var_dump($newCommande);
+                     $em->flush();
                  }
                  $row++;
-                 die();
              }
              fclose($handle);
+             var_dump("ferme ta guele.. et va cherhcer des bieres");
+             $em->flush();
          }
      }
 
@@ -121,19 +135,10 @@ class ImportController extends Controller
     {
         $myClient = null;
         $em = $this->getDoctrine()->getManager();
-        $client = $em->getRepository('SalarieBundle:Client')->findOneBy(array("nom" => $nomClient));
+        $client = $em->getRepository('SalarieBundle:Client')->findOneBy(array("nom" => $nomClient, "adresse" => $adresseClient));
         if ($client instanceof Client) {
-            if ($client->getAdresse() != $adresseClient) {
-                //new client
-            }
-            else {
-                $myClient = $client;
-            }
+            $myClient = $client;
         }
-        else {
-            //new client
-        }
-
         return $myClient;
     }
 
