@@ -87,12 +87,6 @@ class CommandeController extends Controller
         ));
     }
 
-    public function getNextCommandeAction() {
-
-        $em = $this->getDoctrine()->getManager();
-        $nextCommande = $em->getRepository('SalarieBundle:Commande')->findOneBy(array('etat' => 0));
-        var_dump($nextCommande);
-    }
 
     /**
      * Displays a form to edit an existing commande entity.
