@@ -91,24 +91,30 @@ class CommandeController extends Controller
     /**
      * Displays a form to edit an existing commande entity.
      *
-     * @Route("/validate/{id}", name="validate_commande")
+     * @Route("/validate/{commande}/{employe}", name="validate_commande")
      * @Method({"GET", "POST"})
      */
     public function validateAndRedirectAction(Request $request) {
 
         $em = $this->getDoctrine()->getManager();
 
-        if(!$request->get('id')) {
+        if(!$request->get('employe') || !$request->get('commande')) {
             return false;
         }
 
-        $commandeValidate = $em->getRepository('SalarieBundle:Commande')->findOneBy(array('id' => $request->get('id')));
+        // MAJ Etat + Employe + Date
+        $commandeValidate = $em->getRepository('SalarieBundle:Commande')->findOneBy(array('id' => $request->get('commande')));
         $commandeValidate->setEtat(Commande::TRAITEE);
+        $commandeValidate->setDateValidation((new \DateTime()));
+        $commandeValidate->setEmploye($request->get('employe'));
         $em->flush();
 
-
+        // MAJ Etat + Employe
         $nextCommande = $em->getRepository('SalarieBundle:Commande')->findOneBy(array('etat' => 0));
         $nextCommande->setEtat(Commande::EN_COURS_DE_TRAITEMENT);
+        $nextCommande->setEmploye($request->get('employe'));
+
+
         $em->flush();
 
         $session = $request->getSession();

@@ -76,17 +76,13 @@ class SecurityController extends Controller
                 $session->set('statut', $securedUser->isManager());
 
                 if($session->get('statut') === self::MANAGER) {
-                    return $this->redirectToRoute('employe_index', array(
-                        'employes' => $employes,
-                        'session' => $session,
-                    ));
+                    return $this->redirectToRoute('employe_index');
                 }
                 else {
 
                     $nextCommande = $this->getNextCommandeAction();
 
                     return $this->redirectToRoute('commande_show', array(
-                        'session' => $session,
                         'id' => $nextCommande,
                     ));
                 }

@@ -29,7 +29,6 @@ class EmployeController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-
         $employes = $em->getRepository('SalarieBundle:Employe')->findAll();
 
         foreach ($employes as $employe) {
