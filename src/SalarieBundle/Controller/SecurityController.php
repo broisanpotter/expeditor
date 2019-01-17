@@ -81,7 +81,7 @@ class SecurityController extends Controller
                 }
                 else {
 
-                    $nextCommande = $this->getNextCommandeAction();
+                    $nextCommande = $this->getNextCommandeAction($securedUser->getId());
 
                     return $this->redirectToRoute('commande_show', array(
                         'id' => $nextCommande,
@@ -130,11 +130,12 @@ class SecurityController extends Controller
         return $form;
     }
 
-    private function getNextCommandeAction() {
+    private function getNextCommandeAction($employeId) {
 
         $em = $this->getDoctrine()->getManager();
         $nextCommande = $em->getRepository('SalarieBundle:Commande')->findOneBy(array('etat' => 0));
         $nextCommande->setEtat(Commande::EN_COURS_DE_TRAITEMENT);
+        $nextCommande->setEmploye($employeId);
         $em->flush();
         return $nextCommande->getId();
     }
