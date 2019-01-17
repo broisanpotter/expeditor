@@ -57,11 +57,14 @@ class CommandeController extends Controller
         $commande->setPoidsTotal($poidsTotalCommande);
         $commande->setPoidsTotalAvecCarton($poidsTotalCommandeAvecCarton);
 
+        $session = $request->getSession();
+
         return $this->render('@Salarie/commande/show.html.twig', array(
             'commande' => $commande,
             'client' => $client,
             'articlesCommande' => $articlesCommandes,
-            ));
+            'employe' => $session->get('id')
+        ));
     }
 
     /**
