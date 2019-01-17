@@ -36,11 +36,10 @@ class Article
      * @param $libelle
      * @param $poids
      */
-    public function __construct($id, $libelle, $poids)
+    public function __construct()
     {
-        $this->setId($id);
-        $this->setLibelle($libelle);
-        $this->setPoids($poids);
+        $this->setLibelle("");
+        $this->setPoids(0);
     }
 
 

@@ -22,3 +22,9 @@ security:
 
             # https://symfony.com/doc/current/security/form_login_setup.html
             #form_login: ~
+
+#    access_control:
+#        # require ROLE_ADMIN for /admin*
+#        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY  }
+#        - { path: ^/employe, roles: ROLE_ADMIN  }
+#        - { path: ^/commande, roles: ROLE_USER  }

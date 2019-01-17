@@ -19,6 +19,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Commande
 {
+
+    const EN_ATTENTE = 0;
+    const EN_COURS_DE_TRAITEMENT = 1;
+    const TRAITEE = 2;
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -29,16 +33,23 @@ class Commande
     /** @ORM\Column(type="date") */
     public $date;
 
-    /** @ORM\Column(type="string") */
+    /** @ORM\Column(type="integer") */
     public $client;
 
-    /** @ORM\Column(type="string") */
+    /** @ORM\Column(type="integer") */
     public $employe;
 
     /** @ORM\Column(type="integer") */
     public $etat;
 
+    /** @ORM\Column(type="date") */
+    public $dateValidation;
+
     public $listArticles_Commande;
+
+    public $poidsTotal;
+
+    public $poidsTotalAvecCarton;
 
 
     /**
@@ -60,6 +71,24 @@ class Commande
     /**
      * @return mixed
      */
+    public function getDateValidation()
+    {
+        return $this->dateValidation;
+    }
+
+    /**
+     * @param mixed $dateValidation
+     */
+    public function setDateValidation($dateValidation)
+    {
+        $this->dateValidation = $dateValidation;
+    }
+
+
+
+    /**
+     * @return mixed
+     */
     public function getEtat()
     {
         return $this->etat;
@@ -70,6 +99,7 @@ class Commande
      */
     public function setEtat($etat)
     {
+        if ($etat)
         $this->etat = $etat;
     }
 
@@ -84,7 +114,7 @@ class Commande
     /**
      * @param mixed $listArticles_Commande
      */
-    public function setListArticlesCommande(Articles_Commande $listArticles_Commande)
+    public function setListArticlesCommande($listArticles_Commande)
     {
         $this->listArticles_Commande = $listArticles_Commande;
     }
@@ -137,6 +167,36 @@ class Commande
         $this->client = $client;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getPoidsTotal()
+    {
+        return $this->poidsTotal;
+    }
 
+    /**
+     * @param mixed $poidsTotal
+     */
+    public function setPoidsTotal($poidsTotal)
+    {
+        $this->poidsTotal = $poidsTotal;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPoidsTotalAvecCarton()
+    {
+        return $this->poidsTotalAvecCarton;
+    }
+
+    /**
+     * @param mixed $poidsTotalAvecCarton
+     */
+    public function setPoidsTotalAvecCarton($poidsTotalAvecCarton)
+    {
+        $this->poidsTotalAvecCarton = $poidsTotalAvecCarton;
+    }
 
 }

@@ -2,10 +2,12 @@
 
 namespace SalarieBundle\Controller;
 
+use SalarieBundle\Entity\Articles_Commande;
 use SalarieBundle\Entity\Commande;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Commande controller.
@@ -26,7 +28,7 @@ class CommandeController extends Controller
 
         $commandes = $em->getRepository('SalarieBundle:Commande')->findAll();
 
-        return $this->render('commande/index.html.twig', array(
+        return $this->render('@Salarie/commande/index.html.twig', array(
             'commandes' => $commandes,
         ));
     }
@@ -38,14 +40,28 @@ class CommandeController extends Controller
      * @Route("/{id}", name="commande_show")
      * @Method("GET")
      */
-    public function showAction(Commande $commande)
+    public function showAction(Request $request, Commande $commande)
     {
-        $deleteForm = $this->createDeleteForm($commande);
+        $poidsTotalCommande =0;
+        $em = $this->getDoctrine()->getManager();
+        $articlesCommandes = $em->getRepository('SalarieBundle:Articles_Commande')->findBy(array('commande' => $commande->getId()));
+        $client = $em->getRepository('SalarieBundle:Client')->find($commande->getClient());
+
+        foreach ($articlesCommandes as $articlesCommande) {
+            $article = $em->getRepository('SalarieBundle:Article')->find($articlesCommande->getArticle());
+            $articlesCommande->setArticle($article);
+            $poidsTotalCommande=$poidsTotalCommande+$articlesCommande->getPoidsTotal();
+        }
+
+        $poidsTotalCommandeAvecCarton = 300 + $poidsTotalCommande;
+        $commande->setPoidsTotal($poidsTotalCommande);
+        $commande->setPoidsTotalAvecCarton($poidsTotalCommandeAvecCarton);
 
         return $this->render('@Salarie/commande/show.html.twig', array(
             'commande' => $commande,
-            'delete_form' => $deleteForm->createView(),
-        ));
+            'client' => $client,
+            'articlesCommande' => $articlesCommandes,
+            ));
     }
 
     /**
@@ -56,7 +72,6 @@ class CommandeController extends Controller
      */
     public function editAction(Request $request, Commande $commande)
     {
-        $deleteForm = $this->createDeleteForm($commande);
         $editForm = $this->createForm('SalarieBundle\Form\CommandeType', $commande);
         $editForm->handleRequest($request);
 
@@ -69,8 +84,41 @@ class CommandeController extends Controller
         return $this->render('@Salarie/commande/edit.html.twig', array(
             'commande' => $commande,
             'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
         ));
     }
+
+
+    /**
+     * Displays a form to edit an existing commande entity.
+     *
+     * @Route("/validate/{id}", name="validate_commande")
+     * @Method({"GET", "POST"})
+     */
+    public function validateAndRedirectAction(Request $request) {
+
+        $em = $this->getDoctrine()->getManager();
+
+        if(!$request->get('id')) {
+            return false;
+        }
+
+        $commandeValidate = $em->getRepository('SalarieBundle:Commande')->findOneBy(array('id' => $request->get('id')));
+        $commandeValidate->setEtat(Commande::TRAITEE);
+        $em->flush();
+
+
+        $nextCommande = $em->getRepository('SalarieBundle:Commande')->findOneBy(array('etat' => 0));
+        $nextCommande->setEtat(Commande::EN_COURS_DE_TRAITEMENT);
+        $em->flush();
+
+        $session = $request->getSession();
+
+        return $this->redirectToRoute('commande_show', array(
+            'session' => $session,
+            'id' => $nextCommande->getId(),
+        ));
+    }
+
+
 
 }

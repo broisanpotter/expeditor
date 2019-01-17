@@ -1,21 +1,29 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Article edit</h1>
-
-    {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
-    {{ form_end(edit_form) }}
-
-    <ul>
-        <li>
-            <a href="{{ path('article_index') }}">Back to the list</a>
-        </li>
-        <li>
+    <h1 class="h1 text-center">Editer article</h1>
+    <div class="col-lg-4 offset-lg-4">
+        <div>
+            {{ form_start(edit_form) }}
+            <div class="form-group">
+                {{ form_row(edit_form.libelle, { 'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="form-group">
+                {{ form_row(edit_form.poids, { 'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="text-center">
+                <input class="btn btn-warning" type="submit" value="Modifier" />
+                <button class="btn btn-primary" onclick="document.location.href='{{ path('article_index') }}'">Retour à la liste</button>
+            </div>
+            {{ form_end(edit_form) }}
+        </div>
+        <br/>
+        <br/>
+        <div class="text-center">
+            <span>Voulez-vous supprimer cet article ?</span>
             {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
+                <input class="btn btn-danger" type="submit" value="Supprimer">
             {{ form_end(delete_form) }}
-        </li>
-    </ul>
+        </div>
+    </div>
 {% endblock %}
