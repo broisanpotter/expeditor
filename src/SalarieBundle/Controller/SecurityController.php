@@ -75,6 +75,8 @@ class SecurityController extends Controller
                 $session->start();
                 $session->set('id', $securedUser->getId());
                 $session->set('statut', $securedUser->isManager());
+                $session->set('nom', $securedUser->getNom());
+                $session->set('prenom', $securedUser->getPrenom());
 
                 // Statut MANAGER
                 if($session->get('statut') === self::MANAGER) {
@@ -89,7 +91,8 @@ class SecurityController extends Controller
                     if($nextCommande) {
                         return $this->redirectToRoute('commande_show', array(
                             'id' => $nextCommande,
-                            'statut' => 'success'
+                            'statut' => 'success',
+
                         ));
                     }
 

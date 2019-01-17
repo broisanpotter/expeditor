@@ -22,9 +22,12 @@ class CommandeController extends Controller
      * @Route("/", name="commande_index")
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
+
+        $session = $request->getSession();
+
         $commandes = $em->getRepository('SalarieBundle:Commande')->findAll();
 
         $newCommandes =array();
@@ -54,6 +57,7 @@ class CommandeController extends Controller
         }
 
         return $this->render('@Salarie/commande/index.html.twig', array(
+            'session' => $session,
             'commandes' => $newCommandes,
         ));
     }
