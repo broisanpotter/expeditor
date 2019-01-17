@@ -121,6 +121,14 @@ class CommandeController extends Controller
 
             return $this->redirectToRoute('commande_show', array(
                 'id' => $nextCommande->getId(),
+                'statut' => 'success'
+            ));
+        }
+
+        else {
+            return $this->redirectToRoute('commande_show', array(
+                'id' => $commandeValidate->getId(),
+                'statut' => 'plus de commande'
             ));
         }
 
