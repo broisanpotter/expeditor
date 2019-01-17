@@ -2,20 +2,21 @@
 
 {% block body %}
 
+{#Navbar#}
+<div class="container-fluid">
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">Bienvenue chez Expeditor</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+
+        <a class="navbar-brand" href="#"></a>
+
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link badge badge-warning" href="{{ path('commande_index') }}">Accueil <span
+                <li class="nav-item active ">
+                    <a class="nav-link btn btn-outline-warning" href="{{ path('commande_index') }}">Accueil <span
                                 class="sr-only">(current)</span></a>
                 </li>
+
                 <li class="nav-item dropdown">
 
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2"
@@ -33,7 +34,7 @@
                     </div>
                 </li>
                 <li class="nav-item dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2"
+                    <button class="btn btn-secondary dropdown-toggle " type="button" id="dropdownMenu2"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Gestion des articles
                         {#<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#}
@@ -47,16 +48,22 @@
                     </div>
                 </li>
 
+
+
                 {#<li class="nav-item">#}
                     {#<a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>#}
                 {#</li>#}
             </ul>
             <form class="form-inline my-2 my-lg-0">
 
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Déconnexion</button>
+                <button class="btn btn-outline-danger my-2 my-sm-0" type="submit" >Déconnexion</button>
+                {#onclick="document.location.href='{{ path('employe_edit', { 'id': employe.id }) }}'#}
             </form>
         </div>
     </nav>
+
+</div>
+{#Fin Navbar#}
 
 
 
@@ -67,7 +74,7 @@
             </div>
         </div>
         <div class="card">
-            <div class="card-header">
+            <div class="card-header" style="background-color: #999999 ">
                 <h2 class="text-center">Listes des commandes </h2>
             </div>
         </div>
@@ -98,15 +105,44 @@
                     {% if commande.employe is not null %}
                         <td>{{ commande.employe.nom }}{{ commande.employe.prenom }} </td>
                     {% else %}
-                        <td> A attribuer</td>
+                    <td> A attribuer</td>
                     {% endif %}
-                    <td>{{ commande.etat }}</td>
+
+                    {% if commande.etat == 0 %}
+                    <td>en attente</td>
+                    {% else %}
+                     <td>en cours</td>
+                    {% endif %}
+
                     <td>{{ commande.client.adresse }}</td>
                 </tr>
             {% endfor %}
             </tbody>
             </thead>
         </table>
+        <div>
+
+        </div>
+
+{#footer#}
+        <div class="container-fluid fixed-bottom" style="background-color:#999999 ">
+            <div class="row">
+                <div class="col-sm">
+                    <div class="align-content-center">
+                    <h2 class="align-self-xl-center text-uppercase font-italic" >Notre expérience à votre service</h2>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <img class="rounded mx-auto d-block" src="{{ asset('bundles/salarie/images/logoExpeditor.png') }}"/>
+                </div>
+                <div class="col-sm">
+                    <script charset='UTF-8' src='http://www.meteofrance.com/mf3-rpc-portlet/rest/vignettepartenaire/791910/type/VILLE_FRANCE/size/PAYSAGE_VIGNETTE' type='text/javascript'></script>
+                </div>
+            </div>
+
+
+        </div>
+
 
         {#<ul>#}
         {#<li>#}
