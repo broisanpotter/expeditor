@@ -63,7 +63,7 @@ class Commande
     /**
      * @param mixed $employe
      */
-    public function setEmploye(Employe $employe)
+    public function setEmploye($employe)
     {
         $this->employe = $employe;
     }
@@ -83,8 +83,6 @@ class Commande
     {
         $this->dateValidation = $dateValidation;
     }
-
-
 
     /**
      * @return mixed
