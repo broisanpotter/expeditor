@@ -52,7 +52,7 @@ class Commande
     /**
      * @param mixed $employe
      */
-    public function setEmploye(Employe $employe)
+    public function setEmploye($employe)
     {
         $this->employe = $employe;
     }
@@ -68,7 +68,7 @@ class Commande
     /**
      * @param mixed $etat
      */
-    public function setEtat(string $etat)
+    public function setEtat($etat)
     {
         $this->etat = $etat;
     }
@@ -100,7 +100,7 @@ class Commande
     /**
      * @param mixed $id
      */
-    public function setId(int $id)
+    public function setId($id)
     {
         $this->id = $id;
     }
@@ -116,7 +116,7 @@ class Commande
     /**
      * @param mixed $date
      */
-    public function setDate(Date $date)
+    public function setDate($date)
     {
         $this->date = $date;
     }
@@ -132,7 +132,7 @@ class Commande
     /**
      * @param mixed $client
      */
-    public function setClient(Client $client)
+    public function setClient($client)
     {
         $this->client = $client;
     }

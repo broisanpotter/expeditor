@@ -9,8 +9,10 @@
 namespace SalarieBundle\Controller;
 
 use SalarieBundle\Entity\Client;
+use SalarieBundle\Entity\Commande;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use SalarieBundle\Entity\Article;
+use Symfony\Component\Validator\Constraints\DateTime;
 use SalarieBundle\Controller\ArticleController;
 use Symfony\Component\HttpFoundation\Response;
 use SalarieBundle\Entity\Employe;
@@ -35,19 +37,20 @@ class ImportController extends Controller
      {
          $clients = array();
          $artilesCommande = array();
-         $commande = array();
+         $commandes = array();
          $tableau = array();
          $row = 0;
 
-         $myArticle = $this->getArticle("Alimentation");
-         var_dump($myArticle);
+         $em = $this->getDoctrine()->getManager();
 
          // Import du fichier CSV
          if (($handle = fopen(__DIR__ . "/../../../app/Resources/uploads/donneesCommandes2.csv", "r")) !== FALSE) { // Lecture du fichier, à adapter
              while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) { // Eléments séparés par un point-virgule, à modifier si necessaire
                  $num = count($data); // Nombre d'éléments sur la ligne traitée
-                 $row++;
-                 var_dump($row);
+
+             var_dump("ligne");
+             var_dump($row);
+
                  for ($c = 0; $c < $num; $c++) {
                      $tableau[$row] = array(
                          "date" => $data[0],
@@ -57,13 +60,36 @@ class ImportController extends Controller
                          "articles" => $data[4]
                     );
                  }
+
+                 var_dump($tableau[$row]);
+
+                 if ($tableau[$row]["date"] != "Date de Commande") {
+                     $commande = new Commande();
+                     $nomClient = $tableau[$row]["client"];
+                     $adresseClient = explode(" - ", $tableau[$row]["adresse"]);
+                     $client = $this->getClient($nomClient, $adresseClient[0]);
+                     $dateCommande = explode(" ", $tableau[$row]["date"]);
+                     $idCommande = substr($tableau[$row]["num"], 8,2);
+                     $commande->setId(intval($idCommande));
+                     $commande->setDate(new DateTime());
+                     $commande->setClient($client->getId());
+                     $commande->setEmploye(null);
+                     //TODO
+                     ////Const => 0
+                     $commande->setEtat(0);
+
+                     var_dump($client);
+                     var_dump($commande);
+
+                     $em->persist($commande);
+                     $em->flush();
+
+
+                 }
+                 $row++;
+                 die();
              }
              fclose($handle);
-
-             var_dump($tableau[2]);
-             var_dump($tableau[3]);
-             var_dump($tableau[4]);
-             die();
          }
      }
 
@@ -79,39 +105,35 @@ class ImportController extends Controller
     {
         $myArticle = null;
         $em = $this->getDoctrine()->getManager();
-        $articles = $em->getRepository('SalarieBundle:Article')->findAll();
-        foreach ($articles as $article) {
-            if ($article instanceof Article) {
-                if ($article->getLibelle() == $libelle) {
-                    $myArticle = $article;
-                }
-            }
-        }
-        //var_dump($myArticle);
+        $myArticle = $em->getRepository('SalarieBundle:Article')->findOneBy(array("libelle" => $libelle));
         return $myArticle;
     }
 
     /**
-     * Get Article Object with libell
+     * Get Client with nom
      *
      * @param $libelle
      * @return Article|null
      * @Route("/client/{nom}", name="import_client")
      * @Method("GET")
      */
-    public function getClient($nom)
+    public function getClient($nomClient, $adresseClient)
     {
         $myClient = null;
         $em = $this->getDoctrine()->getManager();
-        $clients = $em->getRepository('SalarieBundle:Client')->findAll();
-        foreach ($clients as $client) {
-            if ($client instanceof Client) {
-                if ($client->getNom() == $nom) {
-                    $myClient = $client;
-                }
+        $client = $em->getRepository('SalarieBundle:Client')->findOneBy(array("nom" => $nomClient));
+        if ($client instanceof Client) {
+            if ($client->getAdresse() != $adresseClient) {
+                //new client
+            }
+            else {
+                $myClient = $client;
             }
         }
-        var_dump($myClient);
+        else {
+            //new client
+        }
+
         return $myClient;
     }
 
