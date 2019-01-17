@@ -55,12 +55,25 @@
     <br/>
     <div class="text-center">
         {{ form_start(delete_form) }}
-        <span>Voulez-vous supprimer cet employé ?</span>
-        <input class="btn btn-danger text-center" type="submit" value="Oui" onclick="validateDelete()">
+            <span>Voulez-vous supprimer cet employé ?</span>
+            <input class="btn btn-danger text-center" id="submit_delete" type="submit" value="Oui">
         {{ form_end(delete_form) }}
     </div>
 
     <script type="application/javascript">
+        $( document ).ready(function() {
+            $('#submit_delete').on('click', function (e) {
+                e.preventDefault();
+                if (confirm('Êtes-vous certain de vouloir supprimer cet employé ?')) {
+                    // Si oui, on supprime
+                    $(this).submit();
+                } else {
+                    // Sinon, on ne valide pas le formulaire
+                    return false;
+                }
+            });
+        });
+
         function validateDelete() {
             if (confirm('Êtes-vous certain de vouloir supprimer cet employé ?')) {
                 // Si oui, on supprime
