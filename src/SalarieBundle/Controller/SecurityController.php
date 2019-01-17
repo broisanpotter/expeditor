@@ -7,6 +7,7 @@
  */
 
 namespace SalarieBundle\Controller;
+use SalarieBundle\Entity\Commande;
 use SalarieBundle\Entity\Employe;
 use SalarieBundle\Entity\Security;
 use SalarieBundle\Form\SecurityType;
@@ -32,7 +33,7 @@ class SecurityController extends Controller
 
     /**
      *
-     * @Route("/login", name="accueil")
+     * @Route("/login", name="login")
      * @Method("GET")
      */
     public function accueilAction(Request $request) {
@@ -81,9 +82,12 @@ class SecurityController extends Controller
                     ));
                 }
                 else {
+
+                    $nextCommande = $this->getNextCommandeAction();
+
                     return $this->redirectToRoute('commande_show', array(
-                        'employes' => $employes,
                         'session' => $session,
+                        'id' => $nextCommande,
                     ));
                 }
             }
@@ -99,6 +103,7 @@ class SecurityController extends Controller
 
     }
 
+
     /**
      *
      * @Route("/logout", name="deconnexion")
@@ -107,16 +112,11 @@ class SecurityController extends Controller
     public function logoutAction(Request $request) {
 
         $session = $request->getSession();
-
         $session->invalidate();
 
-        $form = $this->generateForm();
-
-        return $this->render('@Salarie/security/login.html.twig', array(
-            'form' => $form->createView(),
-        ));
-
+        return $this->redirectToRoute('login');
     }
+
 
     public function  generateForm() {
         $task = new SecurityType();
@@ -130,6 +130,15 @@ class SecurityController extends Controller
             ->getForm();
 
         return $form;
+    }
+
+    private function getNextCommandeAction() {
+
+        $em = $this->getDoctrine()->getManager();
+        $nextCommande = $em->getRepository('SalarieBundle:Commande')->findOneBy(array('etat' => 0));
+        $nextCommande->setEtat(Commande::EN_COURS_DE_TRAITEMENT);
+        $em->flush();
+        return $nextCommande->getId();
     }
 
 
