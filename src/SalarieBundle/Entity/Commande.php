@@ -20,9 +20,9 @@ use Doctrine\ORM\Mapping as ORM;
 class Commande
 {
 
-    private static $EN_ATTENTE = 0;
-    private static $EN_COURS_DE_TRAITEMENT = 1;
-    private static $TRAITEE = 2;
+    const EN_ATTENTE = 0;
+    const EN_COURS_DE_TRAITEMENT = 1;
+    const TRAITEE = 2;
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -42,8 +42,13 @@ class Commande
     /** @ORM\Column(type="integer") */
     public $etat;
 
+    /** @ORM\Column(type="date") */
+    public $dateValidation;
+
     public $listArticles_Commande;
+
     public $poidsTotal;
+
     public $poidsTotalAvecCarton;
 
 
@@ -62,6 +67,24 @@ class Commande
     {
         $this->employe = $employe;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getDateValidation()
+    {
+        return $this->dateValidation;
+    }
+
+    /**
+     * @param mixed $dateValidation
+     */
+    public function setDateValidation($dateValidation)
+    {
+        $this->dateValidation = $dateValidation;
+    }
+
+
 
     /**
      * @return mixed

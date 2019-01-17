@@ -7,6 +7,7 @@
  */
 
 namespace SalarieBundle\Controller;
+use SalarieBundle\Entity\Commande;
 use SalarieBundle\Entity\Employe;
 use SalarieBundle\Entity\Security;
 use SalarieBundle\Form\SecurityType;
@@ -21,14 +22,18 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 
 class SecurityController extends Controller
 {
 
+    const MANAGER = 1;
+    const EMPLOYE = 0;
+
     /**
      *
-     * @Route("/login", name="accueil")
+     * @Route("/login", name="login")
      * @Method("GET")
      */
     public function accueilAction(Request $request) {
@@ -70,10 +75,21 @@ class SecurityController extends Controller
                 $session->set('id', $securedUser->getId());
                 $session->set('statut', $securedUser->isManager());
 
-                return $this->render('@Salarie/employe/index.html.twig', array(
-                    'employes' => $employes,
-                    'session' => $session,
-                ));
+                if($session->get('statut') === self::MANAGER) {
+                    return $this->redirectToRoute('employe_index', array(
+                        'employes' => $employes,
+                        'session' => $session,
+                    ));
+                }
+                else {
+
+                    $nextCommande = $this->getNextCommandeAction();
+
+                    return $this->redirectToRoute('commande_show', array(
+                        'session' => $session,
+                        'id' => $nextCommande,
+                    ));
+                }
             }
 
             return $this->render('@Salarie/security/login.html.twig', array(
@@ -87,6 +103,7 @@ class SecurityController extends Controller
 
     }
 
+
     /**
      *
      * @Route("/logout", name="deconnexion")
@@ -95,29 +112,33 @@ class SecurityController extends Controller
     public function logoutAction(Request $request) {
 
         $session = $request->getSession();
-
         $session->invalidate();
 
-        $form = $this->generateForm();
-
-        return $this->render('@Salarie/security/login.html.twig', array(
-            'form' => $form->createView(),
-        ));
-
+        return $this->redirectToRoute('login');
     }
+
 
     public function  generateForm() {
         $task = new SecurityType();
-        $task->setEmail(('Adresse email'));
-        $task->setPassword('mdp');
+        $task->setEmail((''));
+        $task->setPassword('');
 
         $form = $this->createFormBuilder($task)
-            ->add('email', TextType::class)
-            ->add('password', TextType::class)
-            ->add('save', SubmitType::class, array('label' => 'Login'))
+            ->add('email', TextType::class, array('label' => 'Mail'))
+            ->add('password', TextType::class, array('label' => 'Mot de passe'))
+            ->add('save', SubmitType::class, array('label' => 'Connexion'))
             ->getForm();
 
         return $form;
+    }
+
+    private function getNextCommandeAction() {
+
+        $em = $this->getDoctrine()->getManager();
+        $nextCommande = $em->getRepository('SalarieBundle:Commande')->findOneBy(array('etat' => 0));
+        $nextCommande->setEtat(Commande::EN_COURS_DE_TRAITEMENT);
+        $em->flush();
+        return $nextCommande->getId();
     }
 
 
