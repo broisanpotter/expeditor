@@ -127,7 +127,7 @@ class Commande
     /**
      * @param mixed $id
      */
-    public function setId(int $id)
+    public function setId($id)
     {
         $this->id = $id;
     }
@@ -159,7 +159,7 @@ class Commande
     /**
      * @param mixed $client
      */
-    public function setClient(Client $client)
+    public function setClient($client)
     {
         $this->client = $client;
     }
