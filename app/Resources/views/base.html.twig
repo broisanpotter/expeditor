@@ -8,10 +8,12 @@
         <link rel="stylesheet" type="text/css" href="{{ asset('bundles/salarie/css/bootstrap.min.css') }}" />
     </head>
     <body style="height: 100%">
+        {% block navbar %}{% endblock %}
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
+
         <script src="{{ asset('bundles/salarie/js/jquery.js') }}"></script>
-        <script src="{{ asset('bundles/salarie/js/bootstrap.js') }}"></script>
         <script src="{{ asset('bundles/salarie/js/bootstrap.bundle.js') }}"></script>
+        <script src="{{ asset('bundles/salarie/js/bootstrap.js') }}"></script>
     </body>
 </html>

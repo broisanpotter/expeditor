@@ -1,39 +1,103 @@
-{% extends 'base.html.twig' %}
+{% extends 'navbar.html.twig' %}
 
 {% block body %}
-    <h1>Commandes list</h1>
 
-    <table>
-        <thead>
+    {#Navbar#}
+
+    {#Fin Navbar#}
+
+
+
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-header">
+                <h1 class="text-center">Accueil Manager </h1><br>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" style="background-color:#999999">
+                <h2 class="text-center">Listes des commandes </h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <table class="table table-sm table-bordered">
+            <thead class="thead-dark">
+
+
             <tr>
-                <th>Id</th>
+                <th>Numéro</th>
                 <th>Date</th>
-                <th>Client</th>
-                <th>Employe</th>
+                <th>Nom du Client</th>
+                <th>Employe responsable</th>
+                <th>Détails articles</th>
                 <th>Etat</th>
-                <th>Actions</th>
+                <th>Adresse de livraison</th>
+
             </tr>
-        </thead>
-        <tbody>
-        {% for commande in commandes %}
-            <tr>
-                <td><a href="{{ path('commande_show', { 'id': commande.id }) }}">{{ commande.id }}</a></td>
-                <td>{% if commande.date %}{{ commande.date|date('Y-m-d') }}{% endif %}</td>
-                <td>{{ commande.client }}</td>
-                <td>{{ commande.employe }}</td>
-                <td>{{ commande.etat }}</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('commande_show', { 'id': commande.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('commande_edit', { 'id': commande.id }) }}">edit</a>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-{% endblock %}
+            </thead>
+            <tbody>
+            {% for commande in commandes %}
+                <tr>
+                    <td><a href="{{ path('commande_show', { 'id': commande.id }) }}">{{ commande.id }}</a></td>
+                    <td>{% if commande.date %}{{ commande.date|date('Y-m-d') }}{% endif %}</td>
+                    <td>{{ commande.client.nom }}</td>
+
+                    {% if commande.employe is not null %}
+                        <td>{{ commande.employe.nom }}{{ commande.employe.prenom }} </td>
+                    {% else %}
+                        <td> A attribuer</td>
+                    {% endif %}
+                    <td>
+                        {% for listArticle_Commande in commande.listArticles_Commande %}
+                            {{ listArticle_Commande.article.libelle }} ({{ listArticle_Commande.quantite }}),
+                        {% endfor %}
+                    </td>
+                    {% if commande.etat == 0 %}
+                        <td>en attente</td>
+                    {% else %}
+                        <td>en cours</td>
+                    {% endif %}
+
+                    <td>{{ commande.client.adresse }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+            </thead>
+        </table>
+        <div>
+
+        </div>
+
+        {#footer#}
+        <div class="container-fluid fixed-bottom" style="background-color:#999999 ">
+            <div class="row">
+                <div class="col-sm">
+                    <div class="align-content-center">
+                        <h2 class="align-self-xl-center text-uppercase font-italic">Notre expérience à votre
+                            service</h2>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <img class="rounded mx-auto d-block" src="{{ asset('bundles/salarie/images/logoExpeditor_grand.png') }}"/>
+                </div>
+                <div class="col-sm">
+                    <script charset='UTF-8'
+                            src='http://www.meteofrance.com/mf3-rpc-portlet/rest/vignettepartenaire/791910/type/VILLE_FRANCE/size/PAYSAGE_VIGNETTE'
+                            type='text/javascript'></script>
+                </div>
+            </div>
+
+
+        </div>
+
+
+        {#<ul>#}
+        {#<li>#}
+        {#<a href="{{ path('commande_new') }}">Create a new commande</a>#}
+        {#</li>#}
+        {#</ul>#}
+
+    </div>
+    <{% endblock %}

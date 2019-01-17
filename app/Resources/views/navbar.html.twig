@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block navbar %}
+    <div class="container-fluid">
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+            <a class="navbar-brand" href="#"></a>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+
+                    <li>
+                        <img class="align-content-lg-start" src="{{ asset('bundles/salarie/images/logoExpeditor_petit.png') }}"/>
+                    </li>
+                    <li class="nav-item active ">
+                        <a class="nav-link btn btn-outline-warning" href="{{ path('commande_index') }}">Accueil <span
+                                    class="sr-only">(current)</span></a>
+                    </li>
+
+                    <li class="nav-item dropdown">
+
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Gestion des employes
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{ path('employe_new') }}">Ajouter</a>
+                            <a class="dropdown-item" href="{{ path('employe_index') }}">Consulter</a>
+
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <button class="btn btn-secondary dropdown-toggle " type="button" id="dropdownMenu2"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Gestion des articles
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{ path('article_new') }}">Ajouter</a>
+                            <a class="dropdown-item" href="{{ path('article_index') }}">Consulter</a>
+
+                        </div>
+                    </li>
+
+                </ul>
+                <form action="{{ path('deconnexion') }}" class="form-inline my-2 my-lg-0">
+
+                    {#<li class="nav-item">#}
+                    {#<a class="nav-link disabled"  tabindex="-1" aria-disabled="true">Bonjour !</a>#}
+                    {#</li>#}
+                    {#<li>#}
+                        {#<h1 class="text-center" style="text-shadow: px" > Bonjour {{session.data.id.nom}}{{ session.data.id.prenom }}!</h1>#}
+                    {#</li>#}
+
+                    {#<a class="nav-link disabled" href="{{ path('deconnexion')}}" tabindex="-1" aria-disabled="true">Disabled</a>#}
+                    <button class="btn btn-outline-danger my-2 my-sm-0" type="submit" >Déconnexion</button>
+
+                </form>
+            </div>
+        </nav>
+
+    </div>
+{% endblock %}

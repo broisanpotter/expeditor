@@ -30,9 +30,35 @@ class CommandeController extends Controller
 
         $commandes = $em->getRepository('SalarieBundle:Commande')->findAll();
 
+        $newCommandes =array();
+        $key = 0;
+
+        foreach ($commandes as $commande) {
+            if ($commande->getEtat() != 2) {
+                $client = $em->getRepository('SalarieBundle:Client')->find($commande->getClient());
+                $commande->setClient($client);
+
+                if ($commande->getEmploye() != null) {
+                    $employe = $em->getRepository('SalarieBundle:Employe')->find($commande->getEmploye());
+                    $commande->setEmploye($employe);
+                }
+
+                $articlesCommandes = $em->getRepository('SalarieBundle:Articles_Commande')->findBy(array("commande" => $commande->getId()));
+                $commande->setListArticlesCommande($articlesCommandes);
+
+                foreach ($articlesCommandes as $articlesCommande) {
+                    $article = $em->getRepository('SalarieBundle:Article')->find($articlesCommande->getArticle());
+                    $articlesCommande->setArticle($article);
+                }
+
+                $newCommandes[$key] = $commande;
+                $key++;
+            }
+        }
+
         return $this->render('@Salarie/commande/index.html.twig', array(
-            'commandes' => $commandes,
-            'session' => $session
+            'session' => $session,
+            'commandes' => $newCommandes,
         ));
     }
 

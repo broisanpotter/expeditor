@@ -49,7 +49,7 @@ class SecurityController extends Controller
         $employes = $em->getRepository('SalarieBundle:Employe')->findAll();
 
         if(!empty($session->get('id'))) {
-            return $this->render('@Salarie/employe/index.html.twig', array(
+            return $this->render('@Salarie/commande/index.html.twig', array(
                 'employes' => $employes,
                 'session' => $session,
             ));
