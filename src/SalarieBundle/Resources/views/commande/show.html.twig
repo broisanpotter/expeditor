@@ -3,8 +3,9 @@
 {% block body %}
     <div class="container">
         <br>
-        <button class="btn btn-outline-danger float-right">Déconnexion</button>
+        <a href="../logout"><input type="button" class="btn btn-outline-danger float-right" value="Déconnexion"/></a>
     </div>
+
     <div class="container">
         <br>
         <h1 class="text-center">Commande n°{{ commande.id }}</h1>
@@ -14,7 +15,7 @@
         <br><br>
     </div>
 
-    <form method="post">
+    <form method="get">
         <div class="container">
             <div class="row">
                 <table class="table table-bordered">
@@ -42,6 +43,7 @@
 
                     </tbody>
                 </table>
+
             </div>
         </div>
 
@@ -58,25 +60,116 @@
 
         <div class="container text-center">
             <br><br><br>
-            <input value="Imprimer bon de livraison " class="btn btn-success col-3" onclick="confirmation()"/>
+            <input type="button" value="Imprimer bon de livraison" class="btn btn-primary col-3" onclick="imprimer()"/>
+            <input type="button" value="Valider" class="btn btn-success col-3" onclick="confirmation()"/>
         </div>
     </form>
+    <div id="imprimer" style="display: none">
+        <div class="container">
+            <br>
+            <h1 class="text-center">Commande n°{{ commande.id }}</h1>
+            <br><br><br><br>
+            <h3>Nom : {{ client.nom }}</h3>
+            <h3>Adresse : {{ client.adresse }}</h3>
+            <br><br>
+        </div>
+
+        <form method="post">
+            <div class="container">
+                <div class="row">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th class="text-center">Libelle</th>
+                            <th class="text-center">Quantité</th>
+                            <th class="text-center">Poids (g)</th>
+                        </tr>
+                        </thead>
+                        <tbody id="table">
+
+                        {% for articleCommande in articlesCommande %}
+                            <tr>
+                                <td>{{ articleCommande.article.libelle }}</td>
+                                <td class="text-center">{{ articleCommande.quantite }}</td>
+                                <td class="text-center">{{ articleCommande.article.poids }}</td>
+                            </tr>
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </form>
+
+
+        <div class="container">
+            <br>
+            <h3>
+                Poids total : {{ commande.poidsTotal }}g
+            </h3>
+            <h3>
+                Poids total (+ carton d'expédition) : {{ commande.poidsTotalAvecCarton }}g
+            </h3>
+        </div>
+    </div>
+
     <script>
+        function imprimer() {
+            var divImprimer = document.getElementById("imprimer").innerHTML;
+            var bool = false;
+            $('.rowTR').each(function () {
+
+                var quantiteBase = $(this).find('.quantiteBase');
+                var quantiteInput = $(this).find('.quantiteInput');
+
+                quantiteInput.removeClass("btn-outline-danger");
+                quantiteInput.css("backgroundColor", 'white');
+                quantiteInput.css("color", 'black');
+                if (quantiteBase.text() != quantiteInput.val()) {
+                    quantiteInput.addClass("btn-outline-danger");
+                    quantiteInput.css("color", 'red');
+                    bool = true;
+                }
+            })
+            if (bool) {
+                alert("Quantités incorrectes");
+            } else {
+
+                var myWindow = window.open();
+                myWindow.document.write(divImprimer);
+                myWindow.document.write('' +
+                    '<STYLE type="text/css">H1 { text-align: center } TABLE{border-collapse: collapse} TD{border: 1px solid black} TH{border: 1px solid black}</STYLE>');
+                myWindow.print();
+                myWindow.close();
+
+
+            }
+        }
+
         function confirmation() {
             var bool = false;
             $('.rowTR').each(function () {
 
                 var quantiteBase = $(this).find('.quantiteBase');
                 var quantiteInput = $(this).find('.quantiteInput');
-                quantiteInput.css("background-color",'white');
-                if(quantiteBase.text() != quantiteInput.val()){
-                    quantiteInput.css("background-color",'red');
+
+                quantiteInput.removeClass("btn-outline-danger");
+                quantiteInput.css("backgroundColor", 'white');
+                quantiteInput.css("color", 'black');
+                if (quantiteBase.text() != quantiteInput.val()) {
+                    quantiteInput.addClass("btn-outline-danger");
+                    quantiteInput.css("color", 'red');
                     bool = true;
                 }
-
             })
-            if(bool){
+            if (bool) {
                 alert("Quantités incorrectes");
+            } else {
+                var val = confirm("Etes vous sûr de vouloir valider le bon de commande ?");
+                if (val) {
+                    document.location.href='{{ path('validate_commande', {'commande' : commande.id,'employe' : employe}) }}'
+                }
             }
         }
 
