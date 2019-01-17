@@ -113,14 +113,11 @@ class CommandeController extends Controller
         $nextCommande = $em->getRepository('SalarieBundle:Commande')->findOneBy(array('etat' => 0));
         $nextCommande->setEtat(Commande::EN_COURS_DE_TRAITEMENT);
         $nextCommande->setEmploye($request->get('employe'));
-
-
         $em->flush();
 
         $session = $request->getSession();
 
         return $this->redirectToRoute('commande_show', array(
-            'session' => $session,
             'id' => $nextCommande->getId(),
         ));
     }
