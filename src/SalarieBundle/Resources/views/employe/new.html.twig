@@ -17,13 +17,13 @@
             <div class="form-group">
                 {{ form_row(form.password, { 'attr': { 'class': 'form-control' } }) }}
             </div>
-            <div class="form-group col-lg-12">
-                <div class="row">
-                    Rôle
+            <label>Rôles</label>
+            <div class="form-group">
+                <div class="float-left">
+                    {{ form_widget(form.manager[0]) }}&nbsp;Manager
                 </div>
-                <div class="text-center">
-                    <label class="radio-inline float-left" for="input_manager"><input type="radio" id="input_manager" name="salariebundle_employe_manager" value="1">&nbsp;Manager</label>
-                    <label class="radio-inline float-right" for="input_resp_commande"><input type="radio" id="input_resp_commande" name="salariebundle_employe_manager" value="0" checked>&nbsp;Responsable commandes</label>
+                <div class="float-right">
+                    {{ form_widget(form.manager[1]) }}&nbsp;Responsable commandes
                 </div>
             </div>
             <br/>

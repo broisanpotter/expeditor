@@ -29,21 +29,6 @@
                 {{ form_widget(edit_form.manager[1]) }}&nbsp;Responsable commandes
             </div>
         </div>
-
-        {#<div class="form-group col-lg-12">#}
-            {#<div class="row">#}
-                {#Rôle#}
-            {#</div>#}
-            {#<div class="text-center">#}
-                {#{% if employe.manager == 1 %}#}
-                    {#<label class="radio-inline float-right" for="input_resp_commande"><input type="radio" id="input_resp_commande" name="salariebundle_employe_[lol]" value="10">&nbsp;Responsable commandes</label>#}
-                    {#<label class="radio-inline float-left" for="input_manager"><input type="radio" id="input_manager" name="salariebundle_employe_[test]" value="1">&nbsp;Manager</label>#}
-                {#{% else %}#}
-                    {#<label class="radio-inline float-right" for="input_resp_commande"><input type="radio" id="input_resp_commande" name="salariebundle_employe_[dota]" value="10">&nbsp;Responsable commandes</label>#}
-                    {#<label class="radio-inline float-left" for="input_manager"><input type="radio" id="input_manager" name="salariebundle_employe_[mdr]" value="1">&nbsp;Manager</label>#}
-                {#{% endif %}#}
-            {#</div>#}
-        {#</div>#}
         <br/>
         <div class="text-center">
                 <input class="btn btn-warning" type="submit" value="Modifier" />
@@ -54,33 +39,22 @@
     <br/>
     <br/>
     <div class="text-center">
-        {{ form_start(delete_form) }}
+        {{ form_start(delete_form, { 'attr': { 'id': 'formDelete' } }) }}
             <span>Voulez-vous supprimer cet employé ?</span>
-            <input class="btn btn-danger text-center" id="submit_delete" type="submit" value="Oui">
+            <input class="btn btn-danger text-center" id="button_delete" onclick="validateDelete()" value="Oui">
         {{ form_end(delete_form) }}
     </div>
+{% endblock %}
 
+{% block javascripts %}
     <script type="application/javascript">
-        $( document ).ready(function() {
-            $('#submit_delete').on('click', function (e) {
-                e.preventDefault();
-                if (confirm('Êtes-vous certain de vouloir supprimer cet employé ?')) {
-                    // Si oui, on supprime
-                    $(this).submit();
-                } else {
-                    // Sinon, on ne valide pas le formulaire
-                    return false;
-                }
-            });
-        });
-
         function validateDelete() {
             if (confirm('Êtes-vous certain de vouloir supprimer cet employé ?')) {
                 // Si oui, on supprime
-                document.location.href="{{ path('employe_index') }}";
+                $('#formDelete').submit();
             } else {
                 // Sinon, on ne valide pas le formulaire
-                return false
+                return false;
             }
         }
     </script>
