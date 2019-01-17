@@ -36,9 +36,36 @@ class ImportController extends Controller
      */
      public function importAction(Request $request)
      {
-         $nomFichier = $request->query->get('fichier');
-         var_dump($nomFichier);
-         die();
+             if ( isset($_FILES["fichier"])) {
+
+                 var_dump($_FILES["fichier"]);
+                 //if there was an error uploading the file
+                 if ($_FILES["fichier"]["error"] > 0) {
+                     echo "Return Code: " . $_FILES["fichier"]["error"] . "<br />";
+
+                 }
+                 else {
+                     //Print file details
+                     $nomFichier = $_FILES["fichier"]["name"];
+                     echo "Upload: " . $_FILES["fichier"]["name"] . "<br />";
+                     echo "Type: " . $_FILES["fichier"]["type"] . "<br />";
+                     echo "Size: " . ($_FILES["fichier"]["size"] / 1024) . " Kb<br />";
+                     echo "Temp fichier: " . $_FILES["fichier"]["tmp_name"] . "<br />";
+
+                     //if file already exists
+                     if (file_exists(__DIR__ . "/../../../app/Resources/uploads/ .". $_FILES["fichier"]["name"])) {
+                         echo $_FILES["file"]["name"] . " already exists. ";
+                         return $this->redirectToRoute('commande_index');
+                     }
+                     else {
+                         //Store file in directory "upload" with the name of "uploaded_file.txt"
+                         move_uploaded_file($_FILES["fichier"]["tmp_name"], __DIR__ . "/../../../app/Resources/uploads/". $_FILES["fichier"]["name"]);
+                         echo "Stored in: " . __DIR__ . "/../../../app/Resources/uploads/ ." . $_FILES["fichier"]["name"] . "<br />";
+                     }
+                 }
+             } else {
+                 echo "No file selected <br />";
+             }
 
          $artilesCommande = array();
          $commandes = array();
@@ -49,7 +76,7 @@ class ImportController extends Controller
          $em = $this->getDoctrine()->getManager();
 
          // Import du fichier CSV
-         if (($handle = fopen(__DIR__ . "/../../../app/Resources/uploads/$nomFichier", "r")) !== FALSE) { // Lecture du fichier, à adapter
+         if (($handle = fopen(__DIR__ . "/../../../app/Resources/uploads/".$_FILES["fichier"]["name"], "r")) !== FALSE) { // Lecture du fichier, à adapter
              while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) { // Eléments séparés par un point-virgule, à modifier si necessaire
                  $num = count($data); // Nombre d'éléments sur la ligne traitée
 
@@ -100,17 +127,15 @@ class ImportController extends Controller
                      $newCommande->setPoidsTotal($poidsTotal);
                      $newCommande->setPoidsTotalAvecCarton($poidsTotal+$carton );
 
-                     var_dump($newCommande);
                      $em->flush();
                  }
                  $row++;
              }
              fclose($handle);
-             var_dump("ferme ta guele.. et va cherhcer des bieres");
              $em->flush();
          }
 
-         return true;
+         return $this->redirectToRoute('commande_index');
      }
 
     /**

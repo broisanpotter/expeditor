@@ -17,6 +17,7 @@
         <div class="card">
             <div class="card-header" style="background-color:#999999">
                 <h2 class="text-center">Listes des commandes </h2>
+                <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#uploadFileModal">Importer un fichier de commande</button>
             </div>
         </div>
     </div>
@@ -100,4 +101,37 @@
         {#</ul>#}
 
     </div>
-    <{% endblock %}
+
+    <div class="modal fade" id="uploadFileModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Importation</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="{{ path('import_index') }}" id="fileForm" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <input type="file" name="fichier" class="form-control"/>
+                        </div>
+                        <button type="submit">Valider</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary float-left" data-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-primary float-right" id="fileSubmit">Importer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+
+{% block javascripts %}
+    <script type="javascript">
+        $('#fileSubmit').on('click', function () {
+            $('#fileForm').submit();
+        });
+    </script>
+{% endblock %}
