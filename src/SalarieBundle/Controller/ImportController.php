@@ -31,7 +31,7 @@ class ImportController extends Controller
     /**
      * Import Commande.
      *
-     * @Route("/{nomfichier}", name="import_index")
+     * @Route("/import", name="import_index")
      * @Method("POST")
      */
      public function importAction(Request $request)
