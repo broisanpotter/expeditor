@@ -3,65 +3,7 @@
 {% block body %}
 
     {#Navbar#}
-    <div class="container-fluid">
 
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-
-            <a class="navbar-brand" href="#"></a>
-
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active ">
-                        <a class="nav-link btn btn-outline-warning" href="{{ path('commande_index') }}">Accueil <span
-                                    class="sr-only">(current)</span></a>
-                    </li>
-
-                    <li class="nav-item dropdown">
-
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Gestion des employes
-
-                            {#<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#}
-                            {#Gestion des employés#}
-                            {#</a>#}
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{{ path('employe_new') }}">ajouter</a>
-                            <a class="dropdown-item" href="{{ path('employe_index') }}">Consulter</a>
-
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <button class="btn btn-secondary dropdown-toggle " type="button" id="dropdownMenu2"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Gestion des articles
-                            {#<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#}
-                            {##}
-                            {#</a>#}
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{{ path('article_new') }}">Ajouter</a>
-                            <a class="dropdown-item" href="{{ path('article_index') }}">Consulter</a>
-
-                        </div>
-                    </li>
-
-                </ul>
-                <form action="{{ path('deconnexion') }}" class="form-inline my-2 my-lg-0">
-
-                    {#<li class="nav-item">#}
-                        {#<a class="nav-link disabled" href="{{ path('employe.nom')}}" tabindex="-1" aria-disabled="true">Disabled</a>#}
-                    {#</li>#}
-
-                    {#<a class="nav-link disabled" href="{{ path('deconnexion')}}" tabindex="-1" aria-disabled="true">Disabled</a>#}
-                    <button class="btn btn-outline-danger my-2 my-sm-0" type="submit" >Déconnexion</button>
-
-                </form>
-            </div>
-        </nav>
-
-    </div>
     {#Fin Navbar#}
 
 
@@ -89,6 +31,7 @@
                 <th>Date</th>
                 <th>Nom du Client</th>
                 <th>Employe responsable</th>
+                <th>Détails articles</th>
                 <th>Etat</th>
                 <th>Adresse facturation</th>
 
@@ -106,7 +49,11 @@
                     {% else %}
                         <td> A attribuer</td>
                     {% endif %}
-
+                    <td>
+                        {% for listArticle_Commande in commande.listArticles_Commande %}
+                            {{ listArticle_Commande.article.libelle }} ({{ listArticle_Commande.quantite }}),
+                        {% endfor %}
+                    </td>
                     {% if commande.etat == 0 %}
                         <td>en attente</td>
                     {% else %}
