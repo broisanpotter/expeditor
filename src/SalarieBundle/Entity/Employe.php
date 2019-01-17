@@ -149,4 +149,14 @@ class Employe
     {
         $this->manager = $manager;
     }
+
+    /**
+     * @param mixed $password
+     */
+    public function setPassword($password)
+    {
+        $this->password = md5($password);
+    }
+
+
 }

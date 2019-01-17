@@ -9,12 +9,11 @@
     </head>
     <body style="height: 100%">
         {% block navbar %}{% endblock %}
+        {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
 
         <script src="{{ asset('bundles/salarie/js/jquery.js') }}"></script>
         <script src="{{ asset('bundles/salarie/js/bootstrap.bundle.js') }}"></script>
         <script src="{{ asset('bundles/salarie/js/bootstrap.js') }}"></script>
-
-        {% block body %}{% endblock %}
     </body>
 </html>
