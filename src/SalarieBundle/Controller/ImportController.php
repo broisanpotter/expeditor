@@ -31,11 +31,15 @@ class ImportController extends Controller
     /**
      * Import Commande.
      *
-     * @Route("/", name="import_index")
-     * @Method("GET")
+     * @Route("/{nomfichier}", name="import_index")
+     * @Method("POST")
      */
-     public function importAction()
+     public function importAction(Request $request)
      {
+         $nomFichier = $request->query->get('fichier');
+         var_dump($nomFichier);
+         die();
+
          $artilesCommande = array();
          $commandes = array();
          $tableau = array();
@@ -45,7 +49,7 @@ class ImportController extends Controller
          $em = $this->getDoctrine()->getManager();
 
          // Import du fichier CSV
-         if (($handle = fopen(__DIR__ . "/../../../app/Resources/uploads/donneesCommandes1.csv", "r")) !== FALSE) { // Lecture du fichier, à adapter
+         if (($handle = fopen(__DIR__ . "/../../../app/Resources/uploads/$nomFichier", "r")) !== FALSE) { // Lecture du fichier, à adapter
              while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) { // Eléments séparés par un point-virgule, à modifier si necessaire
                  $num = count($data); // Nombre d'éléments sur la ligne traitée
 
@@ -105,6 +109,8 @@ class ImportController extends Controller
              var_dump("ferme ta guele.. et va cherhcer des bieres");
              $em->flush();
          }
+
+         return true;
      }
 
     /**
