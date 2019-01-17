@@ -12,6 +12,7 @@ use SalarieBundle\Entity\Employe;
 use SalarieBundle\Entity\Security;
 use SalarieBundle\Form\SecurityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -122,7 +123,7 @@ class SecurityController extends Controller
 
         $form = $this->createFormBuilder($task)
             ->add('email', TextType::class, array('label' => 'Mail'))
-            ->add('password', TextType::class, array('label' => 'Mot de passe'))
+            ->add('password', PasswordType::class, array('label' => 'Mot de passe'))
             ->add('save', SubmitType::class, array('label' => 'Connexion'))
             ->getForm();
 
