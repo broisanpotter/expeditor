@@ -104,22 +104,26 @@ class CommandeController extends Controller
 
         // MAJ Etat + Employe + Date
         $commandeValidate = $em->getRepository('SalarieBundle:Commande')->findOneBy(array('id' => $request->get('commande')));
-        $commandeValidate->setEtat(Commande::TRAITEE);
-        $commandeValidate->setDateValidation((new \DateTime()));
-        $commandeValidate->setEmploye($request->get('employe'));
-        $em->flush();
+
+        if($commandeValidate) {
+            $commandeValidate->setEtat(Commande::TRAITEE);
+            $commandeValidate->setDateValidation((new \DateTime()));
+            $commandeValidate->setEmploye($request->get('employe'));
+            $em->flush();
+        }
 
         // MAJ Etat + Employe
         $nextCommande = $em->getRepository('SalarieBundle:Commande')->findOneBy(array('etat' => 0));
-        $nextCommande->setEtat(Commande::EN_COURS_DE_TRAITEMENT);
-        $nextCommande->setEmploye($request->get('employe'));
-        $em->flush();
+        if($nextCommande) {
+            $nextCommande->setEtat(Commande::EN_COURS_DE_TRAITEMENT);
+            $nextCommande->setEmploye($request->get('employe'));
+            $em->flush();
 
-        $session = $request->getSession();
+            return $this->redirectToRoute('commande_show', array(
+                'id' => $nextCommande->getId(),
+            ));
+        }
 
-        return $this->redirectToRoute('commande_show', array(
-            'id' => $nextCommande->getId(),
-        ));
     }
 
 
