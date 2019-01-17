@@ -20,9 +20,9 @@ use Doctrine\ORM\Mapping as ORM;
 class Commande
 {
 
-    private static $EN_ATTENTE = 0;
-    private static $EN_COURS_DE_TRAITEMENT = 1;
-    private static $TRAITEE = 2;
+    const EN_ATTENTE = 0;
+    const EN_COURS_DE_TRAITEMENT = 1;
+    const TRAITEE = 2;
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -63,7 +63,7 @@ class Commande
     /**
      * @param mixed $employe
      */
-    public function setEmploye(Employe $employe)
+    public function setEmploye($employe)
     {
         $this->employe = $employe;
     }
@@ -83,8 +83,6 @@ class Commande
     {
         $this->dateValidation = $dateValidation;
     }
-
-
 
     /**
      * @return mixed

@@ -6,7 +6,8 @@ use SalarieBundle\Entity\Articles_Commande;
 use SalarieBundle\Entity\Commande;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Commande controller.
@@ -85,5 +86,54 @@ class CommandeController extends Controller
             'edit_form' => $editForm->createView(),
         ));
     }
+
+
+    /**
+     * Displays a form to edit an existing commande entity.
+     *
+     * @Route("/validate/{commande}/{employe}", name="validate_commande")
+     * @Method({"GET", "POST"})
+     */
+    public function validateAndRedirectAction(Request $request) {
+
+        $em = $this->getDoctrine()->getManager();
+
+        if(!$request->get('employe') || !$request->get('commande')) {
+            return false;
+        }
+
+        // MAJ Etat + Employe + Date
+        $commandeValidate = $em->getRepository('SalarieBundle:Commande')->findOneBy(array('id' => $request->get('commande')));
+
+        if($commandeValidate) {
+            $commandeValidate->setEtat(Commande::TRAITEE);
+            $commandeValidate->setDateValidation((new \DateTime()));
+            $commandeValidate->setEmploye($request->get('employe'));
+            $em->flush();
+        }
+
+        // MAJ Etat + Employe
+        $nextCommande = $em->getRepository('SalarieBundle:Commande')->findOneBy(array('etat' => 0));
+        if($nextCommande) {
+            $nextCommande->setEtat(Commande::EN_COURS_DE_TRAITEMENT);
+            $nextCommande->setEmploye($request->get('employe'));
+            $em->flush();
+
+            return $this->redirectToRoute('commande_show', array(
+                'id' => $nextCommande->getId(),
+                'statut' => 'success'
+            ));
+        }
+
+        else {
+            return $this->redirectToRoute('commande_show', array(
+                'id' => $commandeValidate->getId(),
+                'statut' => 'plus de commande'
+            ));
+        }
+
+    }
+
+
 
 }
