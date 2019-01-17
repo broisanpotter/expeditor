@@ -22,14 +22,43 @@ class CommandeController extends Controller
      * @Route("/", name="commande_index")
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
+        $session = $request->getSession();
+
         $commandes = $em->getRepository('SalarieBundle:Commande')->findAll();
 
+        $newCommandes =array();
+        $key = 0;
+
+        foreach ($commandes as $commande) {
+            if ($commande->getEtat() != 2) {
+                $client = $em->getRepository('SalarieBundle:Client')->find($commande->getClient());
+                $commande->setClient($client);
+
+                if ($commande->getEmploye() != null) {
+                    $employe = $em->getRepository('SalarieBundle:Employe')->find($commande->getEmploye());
+                    $commande->setEmploye($employe);
+                }
+
+                $articlesCommandes = $em->getRepository('SalarieBundle:Articles_Commande')->findBy(array("commande" => $commande->getId()));
+                $commande->setListArticlesCommande($articlesCommandes);
+
+                foreach ($articlesCommandes as $articlesCommande) {
+                    $article = $em->getRepository('SalarieBundle:Article')->find($articlesCommande->getArticle());
+                    $articlesCommande->setArticle($article);
+                }
+
+                $newCommandes[$key] = $commande;
+                $key++;
+            }
+        }
+
         return $this->render('@Salarie/commande/index.html.twig', array(
-            'commandes' => $commandes,
+            'session' => $session,
+            'commandes' => $newCommandes,
         ));
     }
 
@@ -57,11 +86,14 @@ class CommandeController extends Controller
         $commande->setPoidsTotal($poidsTotalCommande);
         $commande->setPoidsTotalAvecCarton($poidsTotalCommandeAvecCarton);
 
+        $session = $request->getSession();
+
         return $this->render('@Salarie/commande/show.html.twig', array(
             'commande' => $commande,
             'client' => $client,
             'articlesCommande' => $articlesCommandes,
-            ));
+            'employe' => $session->get('id')
+        ));
     }
 
     /**
@@ -91,34 +123,56 @@ class CommandeController extends Controller
     /**
      * Displays a form to edit an existing commande entity.
      *
-     * @Route("/validate/{id}", name="validate_commande")
+     * @Route("/validate/{commande}/{employe}", name="validate_commande")
      * @Method({"GET", "POST"})
      */
     public function validateAndRedirectAction(Request $request) {
 
         $em = $this->getDoctrine()->getManager();
 
-        if(!$request->get('id')) {
+        if(!$request->get('employe') || !$request->get('commande')) {
             return false;
         }
 
-        $commandeValidate = $em->getRepository('SalarieBundle:Commande')->findOneBy(array('id' => $request->get('id')));
-        $commandeValidate->setEtat(Commande::TRAITEE);
-        $em->flush();
+        // MAJ Etat + Employe + Date
+        $commandeValidate = $em->getRepository('SalarieBundle:Commande')->findOneBy(array('id' => $request->get('commande')));
 
+        if($commandeValidate) {
+            $commandeValidate->setEtat(Commande::TRAITEE);
+            $commandeValidate->setDateValidation((new \DateTime()));
+            $commandeValidate->setEmploye($request->get('employe'));
+            $em->flush();
+        }
 
-        $nextCommande = $em->getRepository('SalarieBundle:Commande')->findOneBy(array('etat' => 0));
-        $nextCommande->setEtat(Commande::EN_COURS_DE_TRAITEMENT);
-        $em->flush();
+        // MAJ Etat + Employe
+        $nextCommandeEnCours = $em->getRepository('SalarieBundle:Commande')->findOneBy(array('etat' => 1, 'employe' => $commandeValidate->getEmploye()));
+        $nextCommandeEnAttente = $em->getRepository('SalarieBundle:Commande')->findOneBy(array('etat' => 0));
 
-        $session = $request->getSession();
+        if($nextCommandeEnCours) {
+            return $this->redirectToRoute('commande_show', array(
+                'id' => $nextCommandeEnCours->getId(),
+                'statut' => 'success'
+            ));
+        }
 
-        return $this->redirectToRoute('commande_show', array(
-            'session' => $session,
-            'id' => $nextCommande->getId(),
-        ));
+        if($nextCommandeEnAttente) {
+            $nextCommandeEnAttente->setEtat(Commande::EN_COURS_DE_TRAITEMENT);
+            $nextCommandeEnAttente->setEmploye($request->get('employe'));
+            $em->flush();
+
+            return $this->redirectToRoute('commande_show', array(
+                'id' => $nextCommandeEnAttente->getId(),
+                'statut' => 'success'
+            ));
+        }
+
+        else {
+            return $this->redirectToRoute('commande_show', array(
+                'id' => $commandeValidate->getId(),
+                'statut' => 'plus de commande'
+            ));
+        }
+
     }
-
-
 
 }

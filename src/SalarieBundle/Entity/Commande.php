@@ -84,8 +84,6 @@ class Commande
         $this->dateValidation = $dateValidation;
     }
 
-
-
     /**
      * @return mixed
      */
