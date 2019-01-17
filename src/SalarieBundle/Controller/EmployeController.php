@@ -51,7 +51,7 @@ class EmployeController extends Controller
             }
         }
 
-        return $this->render('@Salarie/employe/index.html.twig', array(
+        return $this->render('@Salarie/employe/index_gestion_employe.html.twig', array(
             'employes' => $employes,
         ));
     }

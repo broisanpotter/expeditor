@@ -1,8 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
+{% block body %}*
     <h1 class="text-center">Gestion des employés</h1>
-
     <div class="col-lg-12">
         <button class="btn btn-primary float-right" onclick="document.location.href='{{ path('employe_new') }}'">Ajouter un nouvel employé</button>
         <br/>
@@ -23,18 +22,17 @@
             {% for employe in employes %}
                 <tr>
                     <td>{{ employe.id }}</td>
-                    <td class="nom">{{ employe.nom }}</td>
-                    <td class="prenom">{{ employe.prenom }}</td>
+                    <td>{{ employe.nom }}</td>
+                    <td>{{ employe.prenom }}</td>
                     <td>
-                        <input type="hidden" value="{{ employe.manager }}" class="manager" />
                         {% if employe.manager == 1 %}
                             Manager
                         {% else %}
                             Responsable commande
                         {% endif %}
                     </td>
-                    <td class="mail">{{ employe.mail }}</td>
-                    <td></td>
+                    <td>{{ employe.mail }}</td>
+                    <td>{{ employe.nombreCommandeQuotidien }}</td>
                     <td>
                         <button class="btn btn-warning redirect-modify" onclick="document.location.href='{{ path('employe_edit', { 'id': employe.id }) }}'">Voir</button>
                     </td>
