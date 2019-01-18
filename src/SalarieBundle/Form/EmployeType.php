@@ -4,6 +4,7 @@ namespace SalarieBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -16,7 +17,7 @@ class EmployeType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('nom')->add('prenom')->add('mail')->add('password', PasswordType::class)->add('manager',ChoiceType::class,[
+        $builder->add('nom')->add('prenom')->add('mail', EmailType::class)->add('password', PasswordType::class)->add('manager',ChoiceType::class,[
             'choices' => array('Manager' => 1,'Responsable Commande' => 0),
             'label' => "Rôle",
             'attr' => ['class' => 'text-center'],
