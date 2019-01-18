@@ -7,6 +7,7 @@ use SalarieBundle\Form\ArticleType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
@@ -43,18 +44,23 @@ class ArticleController extends Controller
     public function newAction(Request $request)
     {
         $article = new Article();
-        $form = $this->generateForm();
+        $form = $this->createForm('SalarieBundle\Form\ArticleType', $article);
         $form->handleRequest($request);
 
         $em = $this->getDoctrine()->getManager();
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $article->setPoids($form->getData()->poids);
-            $article->setLibelle($form->getData()->libelle);
-            $em->persist($article);
-            $em->flush();
 
-            return $this->redirectToRoute('article_index');
+            if($form->getData()->poids != 0) {
+
+                $article->setPoids($form->getData()->poids);
+                $article->setLibelle($form->getData()->libelle);
+                $em->persist($article);
+                $em->flush();
+
+                return $this->redirectToRoute('article_index');
+            }
+            $form->get('poids')->addError(new FormError('le poids ne peut être nul'));
         }
 
         return $this->render('@Salarie/article/new.html.twig', array(
@@ -72,23 +78,27 @@ class ArticleController extends Controller
     public function editAction(Request $request, Article $article)
     {
         $deleteForm = $this->createDeleteForm($article);
-        $editForm = $this->generateFormEdit($article);
-        $editForm->handleRequest($request);
+        $form = $this->createForm('SalarieBundle\Form\ArticleType', $article);
+        $form->handleRequest($request);
 
         $em = $this->getDoctrine()->getManager();
 
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $article->setPoids($editForm->getData()->poids);
-            $article->setLibelle($editForm->getData()->libelle);
-            $em->persist($article);
-            $em->flush();
+        if ($form->isSubmitted() && $form->isValid()) {
 
-            return $this->redirectToRoute('article_index');
+            if($form->getData()->poids != 0) {
+                $article->setPoids($form->getData()->poids);
+                $article->setLibelle($form->getData()->libelle);
+                $em->persist($article);
+                $em->flush();
+
+                return $this->redirectToRoute('article_index');
+            }
+            $form->get('poids')->addError(new FormError('le poids ne peut être nul'));
         }
 
         return $this->render('@Salarie/article/edit.html.twig', array(
             'article' => $article,
-            'edit_form' => $editForm->createView(),
+            'edit_form' => $form->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
     }
