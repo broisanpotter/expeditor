@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="b61417ae-d453-4eda-8fa8-527e14073c71" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/SalarieBundle/Resources/views/security/login.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/src/SalarieBundle/Resources/views/security/login.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/SalarieBundle/Resources/views/article/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/src/SalarieBundle/Resources/views/article/edit.html.twig" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -18,7 +18,18 @@
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/SalarieBundle/Resources/views/employe/index_gestion_employe.html.twig">
-          <provider selected="true" editor-type-id="text-editor" />
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-153" />
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/SalarieBundle/Resources/views/employe/edit.html.twig">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="289">
+              <caret line="43" column="112" selection-start-line="43" selection-start-column="12" selection-end-line="43" selection-end-column="112" />
+            </state>
+          </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -44,11 +55,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/SalarieBundle/Resources/views/security/login.html.twig">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+            <state relative-caret-position="544">
+              <caret line="32" selection-start-line="32" selection-end-line="32" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#img#0;n#div#0;n#!!top" expanded="true" />
@@ -85,11 +96,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/SalarieBundle/Resources/views/article/edit.html.twig">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="15" column="80" selection-start-line="15" selection-start-column="80" selection-end-line="15" selection-end-column="80" />
+            <state relative-caret-position="119">
+              <caret line="16" column="18" lean-forward="true" selection-start-line="16" selection-start-column="18" selection-end-line="16" selection-end-column="18" />
             </state>
           </provider>
         </entry>
@@ -124,7 +135,6 @@
         <option value="$PROJECT_DIR$/src/SalarieBundle/Resources/views/commande/new.html.twig" />
         <option value="$PROJECT_DIR$/src/SalarieBundle/Entity/Article.php" />
         <option value="$PROJECT_DIR$/src/SalarieBundle/Resources/public/js/jquery.js" />
-        <option value="$PROJECT_DIR$/src/SalarieBundle/Resources/views/article/edit.html.twig" />
         <option value="$PROJECT_DIR$/src/SalarieBundle/Resources/views/article/new.html.twig" />
         <option value="$PROJECT_DIR$/src/SalarieBundle/Resources/views/article/index.html.twig" />
         <option value="$PROJECT_DIR$/app/Resources/views/base.html.twig" />
@@ -134,6 +144,7 @@
         <option value="$PROJECT_DIR$/app/Resources/views/navbar.html.twig" />
         <option value="$PROJECT_DIR$/src/SalarieBundle/Resources/views/commande/index.html.twig" />
         <option value="$PROJECT_DIR$/src/SalarieBundle/Resources/views/security/login.html.twig" />
+        <option value="$PROJECT_DIR$/src/SalarieBundle/Resources/views/article/edit.html.twig" />
       </list>
     </option>
   </component>
@@ -351,7 +362,7 @@
       <workItem from="1547711883001" duration="2491000" />
       <workItem from="1547720123887" duration="10710000" />
       <workItem from="1547798384927" duration="609000" />
-      <workItem from="1547799056968" duration="5221000" />
+      <workItem from="1547799056968" duration="6147000" />
     </task>
     <task id="LOCAL-00001" summary="Ajout : &#10; - Crud page article&#10; - Jquery">
       <created>1547626136485</created>
@@ -416,15 +427,21 @@
       <option name="project" value="LOCAL" />
       <updated>1547803406146</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="modif style login">
+      <created>1547805311718</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1547805311718</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="54417000" />
+    <option name="totallyTimeSpent" value="55343000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15351813" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -458,7 +475,8 @@
     <MESSAGE value="Style page de login" />
     <MESSAGE value="modif style et form" />
     <MESSAGE value="modif style navbar" />
-    <option name="LAST_COMMIT_MESSAGE" value="modif style navbar" />
+    <MESSAGE value="modif style login" />
+    <option name="LAST_COMMIT_MESSAGE" value="modif style login" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/SalarieBundle/Resources/views/commande/new.html.twig">
@@ -568,9 +586,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/SalarieBundle/Resources/views/employe/index_gestion_employe.html.twig">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/SalarieBundle/Resources/views/commande/show.html.twig">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -585,20 +600,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="289">
           <caret line="17" column="86" selection-start-line="17" selection-start-column="86" selection-end-line="17" selection-end-column="86" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/SalarieBundle/Resources/views/article/edit.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" column="80" selection-start-line="15" selection-start-column="80" selection-end-line="15" selection-end-column="80" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/SalarieBundle/Resources/views/employe/edit.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="14" selection-start-line="7" selection-start-column="14" selection-end-line="7" selection-end-column="14" />
         </state>
       </provider>
     </entry>
@@ -628,12 +629,31 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/SalarieBundle/Resources/views/security/login.html.twig">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+        <state relative-caret-position="544">
+          <caret line="32" selection-start-line="32" selection-end-line="32" />
           <folding>
             <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#img#0;n#div#0;n#!!top" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/SalarieBundle/Resources/views/employe/index_gestion_employe.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-153" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/SalarieBundle/Resources/views/employe/edit.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="43" column="112" selection-start-line="43" selection-start-column="12" selection-end-line="43" selection-end-column="112" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/SalarieBundle/Resources/views/article/edit.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="16" column="18" lean-forward="true" selection-start-line="16" selection-start-column="18" selection-end-line="16" selection-end-column="18" />
         </state>
       </provider>
     </entry>

@@ -21,9 +21,23 @@
         <br/>
         <div class="text-center">
             <span>Voulez-vous supprimer cet article ?</span>
-            {{ form_start(delete_form) }}
-                <input class="btn btn-danger" type="submit" value="Supprimer">
+            {{ form_start(delete_form, { 'attr': {'id': 'formDelete'}}) }}
+                <input class="btn btn-danger text-center" id="button_delete" onclick="validateDelete()" value="Oui">
             {{ form_end(delete_form) }}
         </div>
     </div>
+
+    {% block javascripts %}
+        <script type="application/javascript">
+            function validateDelete() {
+                if (confirm('Êtes-vous certain de vouloir supprimer cet article ?')) {
+                    // Si oui, on supprime
+                    $('#formDelete').submit();
+                } else {
+                    // Sinon, on ne valide pas le formulaire
+                    return false;
+                }
+            }
+        </script>
+    {% endblock %}
 {% endblock %}
