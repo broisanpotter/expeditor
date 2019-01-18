@@ -58,7 +58,6 @@
                 </tr>
             {% endfor %}
             </tbody>
-            </thead>
         </table>
         <div>
 
@@ -99,22 +98,10 @@
                         <div class="form-group">
                             <input type="file" name="fichier" class="form-control"/>
                         </div>
-                        <button type="submit">Valider</button>
+                        <button class="btn btn-primary float-right" type="submit">Valider</button>
                     </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary float-left" data-dismiss="modal">Annuler</button>
-                    <button type="submit" class="btn btn-primary float-right" id="fileSubmit">Importer</button>
                 </div>
             </div>
         </div>
     </div>
     {% endblock %}
-
-{% block javascripts %}
-    <script type="javascript">
-        $('#fileSubmit').on('click', function () {
-            $('#fileForm').submit();
-        });
-    </script>
-{% endblock %}
