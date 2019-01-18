@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block navbar %}
+    {{ dump(session) }}
     <div class="container-fluid">
 
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -46,7 +47,7 @@
                 <form action="{{ path('deconnexion') }}" class="form-inline my-2 my-lg-0">
 
                     {#<li class="nav-item">#}
-                    {#<a class="nav-link disabled"  tabindex="-1" aria-disabled="true">Bonjour !</a>#}
+                    {#<a class="nav-link disabled"  tabindex="-1" aria-disabled="true">Bonjour {{session.nom}}{{ session.prenom }}!</a>#}
                     {#</li>#}
                     {#<li>#}
                         {#<h1 class="text-center" style="text-shadow: px" > Bonjour {{session.data.id.nom}}{{ session.data.id.prenom }}!</h1>#}
