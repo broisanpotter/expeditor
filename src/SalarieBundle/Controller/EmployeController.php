@@ -32,22 +32,24 @@ class EmployeController extends Controller
         $employes = $em->getRepository('SalarieBundle:Employe')->findAll();
 
         foreach ($employes as $employe) {
+            $count = 0;
+            $listCommandes = 0;
+
             $commande = $em->getRepository(Commande::class);
-            $listCommandes = $commande->findAll(array('employe' => $employe->getId(), 'etat' => self::STATUT_VALIDE));
+            $listCommandes = $commande->findBy(array('employe' => $employe->getId(), 'etat' => self::STATUT_VALIDE));
 
             if($listCommandes != null) {
 
                 $dateDay = new \DateTime();
                 $currentDay = $dateDay->format('Y-m-d');
-                $count = 0;
                 foreach ($listCommandes as $commande) {
 
                     if($commande->getDateValidation() && $commande->getDateValidation()->format('Y-m-d') == $currentDay) {
                         $count +=1;
                     }
                 }
-                $employe->setNombreCommandeQuotidien($count);
             }
+            $employe->setNombreCommandeQuotidien($count);
         }
 
         return $this->render('@Salarie/employe/index_gestion_employe.html.twig', array(
