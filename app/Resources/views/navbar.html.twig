@@ -2,7 +2,6 @@
 
 {% block navbar %}
     <div class="container-fluid">
-
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 
             <a class="navbar-brand" href="#"></a>
@@ -40,15 +39,9 @@
 
                 </ul>
                 <form action="{{ path('deconnexion') }}" class="form-inline my-2 my-lg-0">
-
-                    {#<li class="nav-item">#}
-                    {#<a class="nav-link disabled"  tabindex="-1" aria-disabled="true">Bonjour !</a>#}
-                    {#</li>#}
-                    {#<li>#}
-                        {#<h1 class="text-center" style="text-shadow: px" > Bonjour {{session.data.id.nom}}{{ session.data.id.prenom }}!</h1>#}
-                    {#</li>#}
-
-                    {#<a class="nav-link disabled" href="{{ path('deconnexion')}}" tabindex="-1" aria-disabled="true">Disabled</a>#}
+                    {% if app.session %}
+                        <h3 class="text-center" style="margin-right: 30px"> Bonjour {{(app.session.get('prenom')) }} {{ (app.session.get('nom')) }}</h3>
+                    {% endif %}
                     <button class="btn btn-outline-danger my-2 my-sm-0" type="submit" >Déconnexion</button>
 
                 </form>
