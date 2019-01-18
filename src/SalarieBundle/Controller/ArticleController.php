@@ -51,7 +51,8 @@ class ArticleController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            if($form->getData()->poids != 0) {
+
+            if($form->getData()->poids > 0 ) {
 
                 $article->setPoids($form->getData()->poids);
                 $article->setLibelle($form->getData()->libelle);
@@ -85,7 +86,7 @@ class ArticleController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            if($form->getData()->poids != 0) {
+            if($form->getData()->poids > 0) {
                 $article->setPoids($form->getData()->poids);
                 $article->setLibelle($form->getData()->libelle);
                 $em->persist($article);
