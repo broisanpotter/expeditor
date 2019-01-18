@@ -94,9 +94,9 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form method="post" action="{{ path('import_index') }}" id="fileForm" enctype="multipart/form-data">
+                    <form method="post" action="{{ path('import_index') }}" id="fileForm" enctype="multipart/form-data" onsubmit="return validateUpload();">
                         <div class="form-group">
-                            <input type="file" name="fichier" class="form-control"/>
+                            <input id="fileInput" type="file" name="fichier" class="form-control" accept=".csv"/>
                         </div>
                         <button class="btn btn-primary float-right" type="submit">Valider</button>
                     </form>
@@ -105,3 +105,17 @@
         </div>
     </div>
     {% endblock %}
+
+
+{% block javascripts %}
+    <script>
+        function validateUpload() {
+            let input = $('#fileInput');
+            if(input.val().toLowerCase().lastIndexOf(".csv") === -1)
+            {
+                alert("Veuillez sélectionner un fichier .csv");
+                return false;
+            }
+        }
+    </script>
+{% endblock %}
